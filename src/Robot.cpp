@@ -3,7 +3,6 @@
 void Robot::RobotInit() {
 	chooser.AddDefault("Default Auto", new ExampleCommand());
 	// chooser.AddObject("My Auto", new MyAutoCommand());
-	frc::SmartDashboard::PutData(CommandBase::drive_train.get());
 	frc::SmartDashboard::PutData(Scheduler::GetInstance());
 }
 
@@ -57,12 +56,6 @@ void Robot::TeleopInit() {
 }
 void Robot::TeleopPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
-	frc::SmartDashboard::PutData("Auto Modes", &chooser);
-	frc::SmartDashboard::PutNumber("GetY", stick->GetY(GenericHID::kLeftHand));
-	frc::SmartDashboard::PutNumber("GetX", stick->GetX(GenericHID::kLeftHand));
-	frc::SmartDashboard::PutNumber("GetTrigger", stick->GetTriggerAxis(GenericHID::kLeftHand));
-	frc::SmartDashboard::PutNumber("GetA", stick->GetAButton());
-
 }
 void Robot::TestPeriodic() {
 	frc::LiveWindow::GetInstance()->Run();

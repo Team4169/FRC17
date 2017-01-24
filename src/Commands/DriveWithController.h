@@ -12,8 +12,6 @@ public:
 	bool IsFinished();
 	void End();
 	void Interrupted();
-private:
-	XboxController* stick;
 };
 
 #endif  // DriveWithController_H

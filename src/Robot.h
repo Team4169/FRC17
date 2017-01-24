@@ -29,7 +29,6 @@ public:
 private:
 	std::unique_ptr<frc::Command> autonomousCommand;
 	frc::SendableChooser<frc::Command*> chooser;
-	XboxController* stick = new XboxController(0);
 };
 
 #endif
