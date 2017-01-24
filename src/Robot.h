@@ -10,6 +10,8 @@
 #include <SmartDashboard/SendableChooser.h>
 #include <SmartDashboard/SmartDashboard.h>
 
+#include "XboxController.h"
+
 #include "Commands/DriveWithController.h"
 #include "Commands/ExampleCommand.h"
 #include "CommandBase.h"
@@ -27,6 +29,7 @@ public:
 private:
 	std::unique_ptr<frc::Command> autonomousCommand;
 	frc::SendableChooser<frc::Command*> chooser;
+	XboxController* stick = new XboxController(0);
 };
 
 #endif

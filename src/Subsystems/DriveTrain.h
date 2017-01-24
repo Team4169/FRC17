@@ -4,18 +4,18 @@
 #include <Commands/Subsystem.h>
 #include "CANTalon.h"
 #include "RobotMap.h"
-#include "Joystick.h"
+#include "XboxController.h"
 
 class DriveTrain : public Subsystem {
 private:
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
-
+	CANTalon* left_motor = new CANTalon(LEFTMOTOR);
+	CANTalon* right_motor = new CANTalon(RIGHTMOTOR);
 public:
 	DriveTrain();
 	void InitDefaultCommand();
-	void Drive(Joystick* joy);
-	CANTalon* motor = new CANTalon(MOTOR);
+	void Drive(XboxController* joy);
 };
 
 #endif  // DriveTrain_H

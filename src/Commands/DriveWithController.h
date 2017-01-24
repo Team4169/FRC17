@@ -1,8 +1,8 @@
 #ifndef DriveWithController_H
 #define DriveWithController_H
 
-#include "Subsystems/DriveTrain.h"
 #include "../CommandBase.h"
+#include "XboxController.h"
 
 class DriveWithController : public CommandBase {
 public:
@@ -13,7 +13,7 @@ public:
 	void End();
 	void Interrupted();
 private:
-	Joystick* stick;
+	XboxController* stick;
 };
 
 #endif  // DriveWithController_H

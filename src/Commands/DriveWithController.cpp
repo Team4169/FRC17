@@ -1,9 +1,9 @@
 #include "DriveWithController.h"
 
-DriveWithController::DriveWithController() {
+DriveWithController::DriveWithController() : CommandBase::CommandBase("DriveWithController") {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(Robot::chassis.get());
-	stick = new Joystick{0};
+	stick = new XboxController(0);
 	Requires(CommandBase::drive_train.get());
 }
 
