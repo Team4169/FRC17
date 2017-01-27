@@ -1,8 +1,10 @@
 #ifndef ROBOTMAP_H
 #define ROBOTMAP_H
 
-constexpr int RIGHTMOTOR = 15; //CANTalon
-constexpr int LEFTMOTOR = 14; //CANTalon
+constexpr int LEFT_FRONT_MOTOR = 0;
+constexpr int LEFT_BACK_MOTOR = 0;
+constexpr int RIGHT_FRONT_MOTOR = 0;
+constexpr int RIGHT_BACK_MOTOR = 0;
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking

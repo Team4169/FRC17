@@ -1,4 +1,5 @@
 #include "XboxController.h"
+#include "CommandBase.h"
 
 #ifndef OI_H
 #define OI_H

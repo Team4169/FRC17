@@ -3,6 +3,7 @@
 #include <WPILib.h>
 
 OI::OI() {
-	// Process operator interface input here.
+	//Define controller to the one in port 0
 	controller = new XboxController(0);
+
 }

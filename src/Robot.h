@@ -10,8 +10,6 @@
 #include <SmartDashboard/SendableChooser.h>
 #include <SmartDashboard/SmartDashboard.h>
 
-#include "XboxController.h"
-
 #include "Commands/DriveWithController.h"
 #include "Commands/ExampleCommand.h"
 #include "CommandBase.h"
