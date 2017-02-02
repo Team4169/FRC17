@@ -1,9 +1,11 @@
 #include "Robot.h"
+#include "AHRS.h"
 
 void Robot::RobotInit() {
 	chooser.AddDefault("Default Auto", new ExampleCommand());
 	// chooser.AddObject("My Auto", new MyAutoCommand());
 	frc::SmartDashboard::PutData(Scheduler::GetInstance());
+	gyro = new AHRS(SPI::Port::kMXP);
 }
 
 	/**
@@ -44,6 +46,8 @@ void Robot::AutonomousInit() {
 }
 void Robot::AutonomousPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
+	SmartDashboard::PutNumber("Displacement_X", gyro->GetDisplacementX());
+	SmartDashboard::PutNumber("Displacement_X", gyro->GetDisplacementY());
 }
 void Robot::TeleopInit() {
 	// This makes sure that the autonomous stops running when
@@ -56,6 +60,8 @@ void Robot::TeleopInit() {
 }
 void Robot::TeleopPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
+	SmartDashboard::PutNumber("Displacement_X", gyro->GetDisplacementX());
+	SmartDashboard::PutNumber("Displacement_X", gyro->GetDisplacementY());
 }
 void Robot::TestPeriodic() {
 	frc::LiveWindow::GetInstance()->Run();
