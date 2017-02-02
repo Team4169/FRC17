@@ -10,12 +10,14 @@
 #include <SmartDashboard/SendableChooser.h>
 #include <SmartDashboard/SmartDashboard.h>
 
-#include "Commands/DriveWithController.h"
-#include "Commands/ExampleCommand.h"
-#include "CommandBase.h"
-#include "AHRS.h"
+#include "OI.h"
+#include "Subsystems/DriveTrain.h"
+#include "Subsystems/ExampleSubsystem.h"
+#include "Subsystems/RopeClimber.h"
+
 class Robot: public frc::IterativeRobot {
 public:
+	Robot();
 	void RobotInit() override;
 	void DisabledInit() override;
 	void DisabledPeriodic() override;
@@ -24,10 +26,20 @@ public:
 	void TeleopInit() override;
 	void TeleopPeriodic() override;
 	void TestPeriodic() override;
-private:
 	std::unique_ptr<frc::Command> autonomousCommand;
+	std::shared_ptr<frc::Subsystem> getExampleSubsystem();
+	std::shared_ptr<frc::Subsystem> getDriveTrain();
+	std::shared_ptr<frc::Subsystem> getRopeClimber();
+	std::shared_ptr<OI> getOI();
+	static Robot *GetInstance();
+
+private:
+	std::shared_ptr <frc::Subsystem> exampleSubsystem;
+	std::shared_ptr <frc::Subsystem> driveTrain;
+	std::shared_ptr <frc::Subsystem> ropeClimber;
+	std::shared_ptr<OI> oi;
 	frc::SendableChooser<frc::Command*> chooser;
-	AHRS *gyro;
 };
+
 
 #endif
