@@ -13,7 +13,7 @@
 #include "Commands/DriveWithController.h"
 #include "Commands/ExampleCommand.h"
 #include "CommandBase.h"
-
+#include "AHRS.h"
 class Robot: public frc::IterativeRobot {
 public:
 	void RobotInit() override;
@@ -27,6 +27,7 @@ public:
 private:
 	std::unique_ptr<frc::Command> autonomousCommand;
 	frc::SendableChooser<frc::Command*> chooser;
+	AHRS *gyro;
 };
 
 #endif
