@@ -1,9 +1,15 @@
 #include "DriveWithController.h"
 
-DriveWithController::DriveWithController() : CommandBase::CommandBase("DriveWithController") {
+static DriveTrain *getDriveTrain() {
+	Robot *robot = Robot::GetInstance();
+	std::shared_ptr<frc::Subsystem> sub = robot->getDriveTrain();
+	return static_cast<DriveTrain *>(sub.get());
+}
+
+DriveWithController::DriveWithController() : Command("DriveWithController") {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(Robot::chassis.get());
-	Requires(CommandBase::drive_train.get());
+	Requires(getDriveTrain());
 }
 
 // Called just before this Command runs the first time
@@ -12,7 +18,7 @@ void DriveWithController::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void DriveWithController::Execute() {
-	CommandBase::drive_train.get()->Drive(oi->controller);
+	getDriveTrain()->Drive(Robot::GetInstance()->getOI().get()->getController());
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -22,11 +28,11 @@ bool DriveWithController::IsFinished() {
 
 // Called once after isFinished returns true
 void DriveWithController::End() {
-
+	getDriveTrain()->Reset();
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void DriveWithController::Interrupted() {
-
+	End();
 }

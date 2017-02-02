@@ -1,10 +1,10 @@
 #ifndef DriveWithController_H
 #define DriveWithController_H
 
-#include "../CommandBase.h"
-#include "XboxController.h"
+#include <Commands/Command.h>
+#include "../Robot.h"
 
-class DriveWithController : public CommandBase {
+class DriveWithController : public frc::Command {
 public:
 	DriveWithController();
 	void Initialize();
