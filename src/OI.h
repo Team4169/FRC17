@@ -13,8 +13,8 @@ public:
 	std::shared_ptr<XboxController> getController();
 private:
 	std::shared_ptr<XboxController> controller;
-	JoystickButton* a;
-	JoystickButton* b;
+	std::shared_ptr<JoystickButton> a,
+		b;
 };
 
 #endif  // OI_H
