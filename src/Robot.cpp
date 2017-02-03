@@ -16,9 +16,6 @@ void Robot::RobotInit() {
 
 	gyro = new AHRS(SPI::Port::kMXP);
 
-
-
-
 	static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->Reset();
 	static_cast<RopeClimber*>(GetInstance()->getRopeClimber().get())->Stop();
 }
