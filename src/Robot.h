@@ -9,6 +9,7 @@
 #include <LiveWindow/LiveWindow.h>
 #include <SmartDashboard/SendableChooser.h>
 #include <SmartDashboard/SmartDashboard.h>
+#include <AHRS.h>
 
 #include "OI.h"
 #include "Subsystems/DriveTrain.h"
@@ -32,14 +33,13 @@ public:
 	std::shared_ptr<frc::Subsystem> getRopeClimber();
 	std::shared_ptr<OI> getOI();
 	static Robot *GetInstance();
-
 private:
 	std::shared_ptr <frc::Subsystem> exampleSubsystem;
 	std::shared_ptr <frc::Subsystem> driveTrain;
 	std::shared_ptr <frc::Subsystem> ropeClimber;
 	std::shared_ptr<OI> oi;
 	frc::SendableChooser<frc::Command*> chooser;
+	AHRS* gyro;
 };
-
 
 #endif
