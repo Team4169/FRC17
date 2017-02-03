@@ -11,7 +11,7 @@
 #include "../RobotMap.h"
 #include "../Commands/DriveWithController.h"
 
-class DriveTrain : public Subsystem {
+class DriveTrain : public Subsystem, PIDOutput{
 private:
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
@@ -19,24 +19,34 @@ private:
 	CANTalon* left_back_motor;
 	CANTalon* right_front_motor;
 	CANTalon* right_back_motor;
+
 	RobotDrive* robotdrive;
+	double x, y;
+	double rotation;
 
 	AnalogGyro* gyro;
+	AHRS* ahrs;
+    PIDController* turnController;      // PID Controller
 
-	constexpr static double kP = 0.03f,
+    bool rotateToAngle;
+    double rotateToAngleRate;           // Current rotation rate
+
+    double currentAngle;
+
+    constexpr static double kP = 0.03f,
 			kI = 0.00f,
 			kD = 0.00f,
 			kF = 0.00f,
 			kToleranceDegrees = 2.00f;
-
-	double x, y;
-	double rotation;
 
 public:
 	DriveTrain();
 	void InitDefaultCommand();
 	void Drive(std::shared_ptr<XboxController> joy);
 	void Reset();
+	void TurnToDegree(int angle);
+	void PIDWrite(float output);
+	double getCurrentAngle();
 };
 
 #endif  // DriveTrain_H

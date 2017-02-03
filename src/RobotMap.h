@@ -10,7 +10,6 @@ constexpr int LEFT_CLIMBER_MOTOR = 0;
 constexpr int RIGHT_CLIMBER_MOTOR = 0;
 
 constexpr int ANALOG_GYRO = 0;
-constexpr int AHRS = 0;
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
