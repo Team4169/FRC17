@@ -23,6 +23,7 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	rotateToAngle = false;
 
 	currentAngle = 0;
+}
 
 void DriveTrain::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
