@@ -2,8 +2,8 @@
 
 
 RopeClimber::RopeClimber() : Subsystem("RopeClimber") {
-	left_motor = new CANTalon(LEFT_CLIMBER_MOTOR);
-	right_motor = new CANTalon(RIGHT_CLIMBER_MOTOR);
+	left_motor = std::make_shared<CANTalon>(LEFT_CLIMBER_MOTOR);
+	right_motor = std::make_shared<CANTalon>(RIGHT_CLIMBER_MOTOR);
 }
 
 void RopeClimber::InitDefaultCommand() {

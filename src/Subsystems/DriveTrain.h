@@ -15,13 +15,11 @@ class DriveTrain : public Subsystem {
 private:
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
-	CANTalon* left_front_motor;
-	CANTalon* left_back_motor;
-	CANTalon* right_front_motor;
-	CANTalon* right_back_motor;
-	RobotDrive* robotdrive;
-
-	AnalogGyro* gyro;
+	std::shared_ptr<CANTalon> left_front_motor,
+		left_back_motor,
+		right_front_motor,
+		right_back_motor;
+	std::shared_ptr<RobotDrive> robotdrive;
 
 	constexpr static double kP = 0.03f,
 			kI = 0.00f,
