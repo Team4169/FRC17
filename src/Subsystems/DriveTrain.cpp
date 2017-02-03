@@ -1,6 +1,6 @@
 #include "DriveTrain.h"
 
-DriveTrain::DriveTrain() : Subsystem("DriveTrain"){
+DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	x = 0;
 	y = 0;
 	rotation = 0;
@@ -13,7 +13,16 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain"){
 	robotdrive = std::make_shared<RobotDrive>(left_front_motor, left_back_motor, right_front_motor, right_back_motor);
 	robotdrive->SetInvertedMotor(RobotDrive::kFrontLeftMotor, true);
 	robotdrive->SetInvertedMotor(RobotDrive::kRearLeftMotor, true);
-}
+
+	gyro = std::make_shared<AnalogGyro>(ANALOG_GYRO);
+	ahrs = new AHRS(SPI::Port::kMXP);
+
+	turnController = new PIDController(kP, kI, kD, kF, ahrs, this);
+
+	rotateToAngleRate = 0;
+	rotateToAngle = false;
+
+	currentAngle = 0;
 
 void DriveTrain::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
@@ -40,11 +49,28 @@ void DriveTrain::Drive(std::shared_ptr<XboxController> joy){
 	rotation = joy->GetTriggerAxis(GenericHID::kRightHand) - joy->GetTriggerAxis(GenericHID::kLeftHand);
 
 	robotdrive->MecanumDrive_Cartesian(x, y, rotation);
-
 }
 
 void DriveTrain::Reset(){
 	robotdrive->MecanumDrive_Cartesian(0, 0 , 0);
 }
 
+void DriveTrain::TurnToDegree(int angle) {
+	turnController->SetSetpoint(angle); //Turns the robot to the angle given. Angle 0 is the angle during which the robot was initialized in, not the direction the robot is facing
+    rotateToAngle = true;
+
+    turnController->Enable();
+
+    robotdrive->MecanumDrive_Polar(0, angle, rotateToAngleRate);
+
+    currentAngle = gyro->GetAngle();
+}
+
+void DriveTrain::PIDWrite(float output) {
+	rotateToAngleRate = output;
+}
+
+double DriveTrain::getCurrentAngle() {
+	return currentAngle;
+}
 
