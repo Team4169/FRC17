@@ -13,7 +13,8 @@ void Robot::RobotInit() {
 	//chooser.AddDefault("Default Auto", new ExampleCommand());
 	// chooser.AddObject("My Auto", new MyAutoCommand());
 	frc::SmartDashboard::PutData(Scheduler::GetInstance());
-
+	static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->Reset();
+	static_cast<RopeClimber*>(GetInstance()->getRopeClimber().get())->Stop();
 }
 
 	/**

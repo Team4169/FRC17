@@ -15,21 +15,21 @@ class DriveTrain : public Subsystem, PIDOutput{
 private:
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
-	CANTalon* left_front_motor;
-	CANTalon* left_back_motor;
-	CANTalon* right_front_motor;
-	CANTalon* right_back_motor;
-
-	RobotDrive* robotdrive;
 	double x, y;
 	double rotation;
 
-	AnalogGyro* gyro;
+	std::shared_ptr<AnalogGyro> gyro;
 	AHRS* ahrs;
     PIDController* turnController;      // PID Controller
 
     bool rotateToAngle;
     double rotateToAngleRate;           // Current rotation rate
+
+	std::shared_ptr<CANTalon> left_front_motor,
+		left_back_motor,
+		right_front_motor,
+		right_back_motor;
+	std::shared_ptr<RobotDrive> robotdrive;
 
     double currentAngle;
 
