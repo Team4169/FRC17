@@ -73,3 +73,7 @@ double DriveTrain::getCurrentAngle() {
 	return currentAngle;
 }
 
+AHRS* DriveTrain::getAHRS(){
+	return ahrs;
+}
+

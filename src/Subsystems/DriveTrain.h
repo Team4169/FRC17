@@ -45,6 +45,7 @@ public:
 	void Reset();
 	void TurnToDegree(double angle);
 	void PIDWrite(float output);
+	AHRS* getAHRS();
 	double getCurrentAngle();
 };
 

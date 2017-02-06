@@ -13,10 +13,18 @@ void Robot::RobotInit() {
 	//chooser.AddDefault("Default Auto", new ExampleCommand());
 	// chooser.AddObject("My Auto", new MyAutoCommand());
 	frc::SmartDashboard::PutData(Scheduler::GetInstance());
+	frc::SmartDashboard::PutData(static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get()));
+	frc::SmartDashboard::PutData(static_cast<RopeClimber*>(GetInstance()->getRopeClimber().get()));
+
+	frc::SmartDashboard::PutBoolean("A Button", GetInstance()->getOI()->getController()->GetAButton());
+	frc::SmartDashboard::PutBoolean("B Button", GetInstance()->getOI()->getController()->GetBButton());
+	frc::SmartDashboard::PutNumber("Right Trigger", GetInstance()->getOI()->getController()->GetTriggerAxis(GenericHID::kRightHand));
+	frc::SmartDashboard::PutNumber("Left Trigger", GetInstance()->getOI()->getController()->GetTriggerAxis(GenericHID::kLeftHand));
+	frc::SmartDashboard::PutNumber("X", GetInstance()->getOI()->getController()->GetX(GenericHID::kLeftHand));
+	frc::SmartDashboard::PutNumber("Y", GetInstance()->getOI()->getController()->GetY(GenericHID::kLeftHand));
+
 	static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->Reset();
 	static_cast<RopeClimber*>(GetInstance()->getRopeClimber().get())->Stop();
-
-	gyro = new AHRS(SPI::Port::kMXP);
 }
 
 	/**
@@ -57,8 +65,8 @@ void Robot::AutonomousInit() {
 }
 void Robot::AutonomousPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
-	SmartDashboard::PutNumber("X Displacement", gyro->GetDisplacementX());
-	SmartDashboard::PutNumber("Y Displacement", gyro->GetDisplacementY());
+	SmartDashboard::PutNumber("X Displacement", static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->getAHRS()->GetDisplacementX());
+	SmartDashboard::PutNumber("Y Displacement", static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->getAHRS()->GetDisplacementY());
 }
 void Robot::TeleopInit() {
 	// This makes sure that the autonomous stops running when
@@ -71,8 +79,8 @@ void Robot::TeleopInit() {
 }
 void Robot::TeleopPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
-	SmartDashboard::PutNumber("X Displacement", gyro->GetDisplacementX());
-	SmartDashboard::PutNumber("Y Displacement", gyro->GetDisplacementY());
+	SmartDashboard::PutNumber("X Displacement", static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->getAHRS()->GetDisplacementX());
+	SmartDashboard::PutNumber("Y Displacement", static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->getAHRS()->GetDisplacementY());
 }
 void Robot::TestPeriodic() {
 	frc::LiveWindow::GetInstance()->Run();

@@ -40,7 +40,6 @@ private:
 	std::shared_ptr <frc::Subsystem> ropeClimber;
 	std::shared_ptr<OI> oi;
 	frc::SendableChooser<frc::Command*> chooser;
-	AHRS* gyro;
 };
 
 
