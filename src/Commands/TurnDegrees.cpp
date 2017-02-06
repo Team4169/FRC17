@@ -26,8 +26,9 @@ void TurnDegrees::Execute() {
 bool TurnDegrees::IsFinished() {
 	if(getDriveTrain()->getCurrentAngle() == desiredAngle){
 		return true;
+	} else {
+		return false;
 	}
-	else return false;
 }
 
 // Called once after isFinished returns true
