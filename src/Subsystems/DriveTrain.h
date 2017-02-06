@@ -42,6 +42,7 @@ public:
 	DriveTrain();
 	void InitDefaultCommand();
 	void Drive(std::shared_ptr<XboxController> joy);
+	void DriveInput(double x, double y, double rotation);
 	void Reset();
 	void TurnToDegree(double angle);
 	void PIDWrite(float output);
