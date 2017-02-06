@@ -15,6 +15,8 @@ void Robot::RobotInit() {
 	frc::SmartDashboard::PutData(Scheduler::GetInstance());
 	static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->Reset();
 	static_cast<RopeClimber*>(GetInstance()->getRopeClimber().get())->Stop();
+
+	gyro = new AHRS(SPI::Port::kMXP);
 }
 
 	/**
@@ -55,6 +57,8 @@ void Robot::AutonomousInit() {
 }
 void Robot::AutonomousPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
+	SmartDashboard::PutNumber("X Displacement", gyro->GetDisplacementX());
+	SmartDashboard::PutNumber("Y Displacement", gyro->GetDisplacementY());
 }
 void Robot::TeleopInit() {
 	// This makes sure that the autonomous stops running when
@@ -67,6 +71,8 @@ void Robot::TeleopInit() {
 }
 void Robot::TeleopPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
+	SmartDashboard::PutNumber("X Displacement", gyro->GetDisplacementX());
+	SmartDashboard::PutNumber("Y Displacement", gyro->GetDisplacementY());
 }
 void Robot::TestPeriodic() {
 	frc::LiveWindow::GetInstance()->Run();
