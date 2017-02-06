@@ -52,6 +52,12 @@ void DriveTrain::Drive(std::shared_ptr<XboxController> joy){
 	robotdrive->MecanumDrive_Cartesian(x, y, rotation);
 }
 
+void DriveTrain::DriveInput(double x, double y, double rotation) {
+
+	robotdrive->MecanumDrive_Cartesian(x, y, rotation);
+
+}
+
 void DriveTrain::Reset(){
 	robotdrive->MecanumDrive_Cartesian(0, 0 , 0);
 }
