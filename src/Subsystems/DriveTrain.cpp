@@ -14,8 +14,6 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	robotdrive->SetInvertedMotor(RobotDrive::kFrontLeftMotor, true);
 	robotdrive->SetInvertedMotor(RobotDrive::kRearLeftMotor, true);
 
-	gyro = std::make_shared<AnalogGyro>(ANALOG_GYRO);
-
 	ahrs = new AHRS(SPI::Port::kMXP);
 	turnController = new PIDController(kP, kI, kD, kF, ahrs, this);
 
@@ -68,7 +66,7 @@ void DriveTrain::TurnToDegree(double angle) {
 	//not the direction the robot is facing
     robotdrive->MecanumDrive_Polar(0, angle, rotateToAngleRate);
 
-    currentAngle = gyro->GetAngle();
+    currentAngle = ahrs->GetAngle();
 }
 
 void DriveTrain::PIDWrite(float output) {
