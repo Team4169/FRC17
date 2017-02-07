@@ -1,4 +1,5 @@
-#include "TurnDegrees.h"
+#include "DriveForDistance.h"
+#include <math.h>
 
 static DriveTrain *getDriveTrain() {
 	Robot *robot = Robot::GetInstance();
@@ -6,38 +7,33 @@ static DriveTrain *getDriveTrain() {
 	return static_cast<DriveTrain *>(sub.get());
 }
 
-TurnDegrees::TurnDegrees(double angle) {
+DriveForDistance::DriveForDistance(double a, double d) {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(Robot::chassis.get());
-	desiredAngle = angle;
+	angle = a;
+	distance = d;
 }
 
 // Called just before this Command runs the first time
-void TurnDegrees::Initialize() {
-
-}
+void DriveForDistance::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void TurnDegrees::Execute() {
-	getDriveTrain()->TurnToDegree(desiredAngle);
+void DriveForDistance::Execute() {
+	getDriveTrain()->DriveInput(sin(angle)*distance, cos(angle)*distance, 0);
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool TurnDegrees::IsFinished() {
-	if(getDriveTrain()->getCurrentAngle() == desiredAngle){
-		return true;
-	} else {
-		return false;
-	}
+bool DriveForDistance::IsFinished() {
+	return false;
 }
 
 // Called once after isFinished returns true
-void TurnDegrees::End() {
+void DriveForDistance::End() {
 	getDriveTrain()->Reset();
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void TurnDegrees::Interrupted() {
+void DriveForDistance::Interrupted() {
 	End();
 }

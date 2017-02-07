@@ -14,6 +14,12 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 
+# Object Files
+*.o
+
+# Other
+*.cproject
+
 # Windows shortcuts
 *.lnk
 

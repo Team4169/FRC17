@@ -19,10 +19,9 @@ private:
 	double rotation;
 
 	std::shared_ptr<AnalogGyro> gyro;
-	AHRS* ahrs;
-    PIDController* turnController;      // PID Controller
+	AHRS *ahrs;
+    PIDController *turnController;      // PID Controller
 
-    bool rotateToAngle;
     double rotateToAngleRate;           // Current rotation rate
 
 	std::shared_ptr<CANTalon> left_front_motor,
@@ -43,9 +42,11 @@ public:
 	DriveTrain();
 	void InitDefaultCommand();
 	void Drive(std::shared_ptr<XboxController> joy);
+	void DriveInput(double x, double y, double rotation);
 	void Reset();
-	void TurnToDegree(int angle);
+	void TurnToDegree(double angle);
 	void PIDWrite(float output);
+	AHRS* getAHRS();
 	double getCurrentAngle();
 };
 
