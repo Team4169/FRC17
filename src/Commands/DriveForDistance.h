@@ -15,7 +15,6 @@ public:
 private:
 	double distance; //meters
 	double angle;
-	double speed;
 };
 
 #endif  // EXAMPLE_COMMAND_H
