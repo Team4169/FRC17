@@ -3,6 +3,7 @@
 
 #include "Commands/UpRope.h"
 #include "Commands/DownRope.h"
+#include "RobotMap.h"
 
 #ifndef OI_H
 #define OI_H
