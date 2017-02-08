@@ -13,7 +13,7 @@ public:
 	void End() override;
 	void Interrupted() override;
 private:
-	double distance;
+	double distance; //meters
 	double angle;
 };
 

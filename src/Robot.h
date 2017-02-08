@@ -27,7 +27,6 @@ public:
 	void TeleopInit() override;
 	void TeleopPeriodic() override;
 	void TestPeriodic() override;
-	std::unique_ptr<frc::Command> autonomousCommand;
 	std::shared_ptr<frc::Subsystem> getExampleSubsystem();
 	std::shared_ptr<frc::Subsystem> getDriveTrain();
 	std::shared_ptr<frc::Subsystem> getRopeClimber();
@@ -40,6 +39,7 @@ private:
 	std::shared_ptr <frc::Subsystem> ropeClimber;
 	std::shared_ptr<OI> oi;
 	frc::SendableChooser<frc::Command*> chooser;
+	std::unique_ptr<frc::Command> autonomousCommand;
 };
 
 
