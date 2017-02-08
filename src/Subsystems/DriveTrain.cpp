@@ -4,6 +4,7 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	x = 0;
 	y = 0;
 	rotation = 0;
+	autoAlignEnabled = false;
 
 	left_front_motor = std::make_shared<CANTalon>(LEFT_FRONT_MOTOR);
 	left_back_motor = std::make_shared<CANTalon>(LEFT_BACK_MOTOR);
@@ -81,5 +82,13 @@ double DriveTrain::getCurrentAngle() {
 
 AHRS* DriveTrain::getAHRS(){
 	return ahrs;
+}
+
+bool DriveTrain::getAutoAlignMode(){
+	return autoAlignEnabled;
+}
+
+void DriveTrain::setAutoAlignMode(bool on){
+	autoAlignEnabled = on;
 }
 

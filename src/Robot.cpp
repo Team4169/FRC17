@@ -1,4 +1,5 @@
 #include "Robot.h"
+#include <GripPipeline.h>
 
 static Robot *mRobotPointer = NULL;
 
@@ -9,15 +10,46 @@ Robot::Robot(){
 	}
 }
 
+void Robot::VisionThread(){
+        cs::UsbCamera camera = CameraServer::GetInstance()->StartAutomaticCapture();
+	camera.SetResolution(CAMERA_IMG_WIDTH, CAMERA_IMG_HEIGHT);
+	camera.SetExposureManual(0);
+	cs::CvSink cvSink = CameraServer::GetInstance()->GetVideo();
+
+	cs::CvSource outputStream = CameraServer::GetInstance()->
+						PutVideo("Rectangle", CAMERA_IMG_WIDTH, CAMERA_IMG_HEIGHT);
+	cs::CvSource outputStream2 = CameraServer::GetInstance()->PutVideo("Contours", CAMERA_IMG_WIDTH, CAMERA_IMG_HEIGHT);
+	cv::Mat mat;
+	grip::GripPipeline* visionPipeline = new grip::GripPipeline();
+	while(true){
+	        if (cvSink.GrabFrame(mat) == 0) {
+		        // Send the output the error.
+		        outputStream.NotifyError(cvSink.GetError());
+			// skip the rest of the current iteration
+			continue;
+		}
+		visionPipeline->Process(mat);
+		outputStream.PutFrame(*(visionPipeline->getRectanglesMat()));
+		outputStream2.PutFrame(*(visionPipeline->getContoursMat()));
+	}
+
+
+}
+
+
 void Robot::RobotInit() {
 	//chooser.AddDefault("Default Auto", new ExampleCommand());
 	// chooser.AddObject("My Auto", new MyAutoCommand());
-	frc::SmartDashboard::PutData(Scheduler::GetInstance());
-	frc::SmartDashboard::PutData(static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get()));
-	frc::SmartDashboard::PutData(static_cast<RopeClimber*>(GetInstance()->getRopeClimber().get()));
+	//frc::SmartDashboard::PutData(Scheduler::GetInstance());
+	//frc::SmartDashboard::PutData(static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get()));
+	//frc::SmartDashboard::PutData(static_cast<RopeClimber*>(GetInstance()->getRopeClimber().get()));
 
-	static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->Reset();
-	static_cast<RopeClimber*>(GetInstance()->getRopeClimber().get())->Stop();
+	//static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->Reset();
+	//static_cast<RopeClimber*>(GetInstance()->getRopeClimber().get())->Stop();
+
+	std::thread visionThread(VisionThread);
+	visionThread.detach();
+
 }
 
 	/**
@@ -58,9 +90,9 @@ void Robot::AutonomousInit() {
 }
 void Robot::AutonomousPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
-	frc::SmartDashboard::PutNumber("Angle", static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->getAHRS()->GetAngle());
-	frc::SmartDashboard::PutNumber("X Displacement", static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->getAHRS()->GetDisplacementX());
-	frc::SmartDashboard::PutNumber("Y Displacement", static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->getAHRS()->GetDisplacementY());
+	//frc::SmartDashboard::PutNumber("Angle", static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->getAHRS()->GetAngle());
+	//frc::SmartDashboard::PutNumber("X Displacement", static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->getAHRS()->GetDisplacementX());
+	//frc::SmartDashboard::PutNumber("Y Displacement", static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->getAHRS()->GetDisplacementY());
 }
 void Robot::TeleopInit() {
 	// This makes sure that the autonomous stops running when

@@ -34,12 +34,17 @@ public:
 	std::shared_ptr<OI> getOI();
 	static Robot *GetInstance();
 
+	const static int CAMERA_IMG_WIDTH = 320;
+	const static int CAMERA_IMG_HEIGHT = 240;
+
 private:
 	std::shared_ptr <frc::Subsystem> exampleSubsystem;
 	std::shared_ptr <frc::Subsystem> driveTrain;
 	std::shared_ptr <frc::Subsystem> ropeClimber;
 	std::shared_ptr<OI> oi;
 	frc::SendableChooser<frc::Command*> chooser;
+	static void VisionThread();
+
 };
 
 

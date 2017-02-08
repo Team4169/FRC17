@@ -17,6 +17,7 @@ private:
 	// for methods that implement subsystem capabilities
 	double x, y;
 	double rotation;
+	bool autoAlignEnabled;
 
 	std::shared_ptr<AnalogGyro> gyro;
 	AHRS *ahrs;
@@ -48,6 +49,8 @@ public:
 	void PIDWrite(float output);
 	AHRS* getAHRS();
 	double getCurrentAngle();
+	bool getAutoAlignMode();
+	void setAutoAlignMode(bool on);
 };
 
 #endif  // DriveTrain_H
