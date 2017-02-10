@@ -70,10 +70,12 @@ void GripPipeline::Process(cv::Mat& source0){
 	rectanglesMat = cv::Mat::zeros(desaturateOutput.size(), CV_8UC3);
 	cv::Rect largestRectangles[2] = {cv::Rect(), cv::Rect()};
 	int largestRectsIndex[2] = {-1, -1};
+	//finds and stores the bounding rects of the largest 2 contours
 	for(int j=0;j<2;j++){
 		int currentContourIndex = 0;
 		double area = 0;
-		for(int i = 0; i< findContoursOutput.size(); i++){
+		int size = (signed int)findContoursOutput.size();
+		for(int i = 0; i<size; i++){
 		   if(area < cv::contourArea(findContoursOutput[i]) && largestRectsIndex[0] != i){
 			   area = cv::contourArea(findContoursOutput[i]);
 			   currentContourIndex = i;
@@ -90,9 +92,13 @@ void GripPipeline::Process(cv::Mat& source0){
 		largestRectsIndex[j] = currentContourIndex;
 		largestRectangles[j] = boundingRect(findContoursOutput[currentContourIndex]);
 	}
+	//draws the rectangles around the largest 2 contours if their sides match a certain ratio
+	//plus or minus a given threshold for error
 	for(int i=0;i<2;i++){
 		cv::Scalar color = cv::Scalar(255, 255, 255);
-		cv::rectangle(rectanglesMat, largestRectangles[i], color, 1, 8, 0);
+		double lwratio = ((double)largestRectangles[i].width)/((double)largestRectangles[i].height);
+		if(lwratio < RECT_W_TO_L_RATIO + RECT_W_TO_L_RATIO_THRESHOLD && lwratio > RECT_W_TO_L_RATIO - RECT_W_TO_L_RATIO_THRESHOLD)
+			cv::rectangle(rectanglesMat, largestRectangles[i], color, 1, 8, 0);
 	}
 
 	//write something to check gyro angle and adjust the angle to the nearest of the three possible angles
