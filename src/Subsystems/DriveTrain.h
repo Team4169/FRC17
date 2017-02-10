@@ -8,8 +8,6 @@
 #include <AHRS.h>
 #include <math.h>
 
-#include "../RobotMap.h"
-#include "../Commands/DriveWithController.h"
 
 class DriveTrain : public Subsystem, PIDOutput{
 private:
@@ -46,7 +44,7 @@ public:
 	void DriveInput(double x, double y, double rotation);
 	void Reset();
 	void TurnToDegree(double angle);
-	void PIDWrite(float output);
+	void PIDWrite(double output);
 	AHRS* getAHRS();
 	double getCurrentAngle();
 	bool getAutoAlignMode();

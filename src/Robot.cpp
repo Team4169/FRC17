@@ -38,14 +38,21 @@ void Robot::VisionThread(){
 
 
 void Robot::RobotInit() {
+
+	driveTrain = std::make_shared<DriveTrain>();
+	ropeClimber = std::make_shared<RopeClimber>();
+	oi = std::make_shared<OI>();
 	//chooser.AddDefault("Default Auto", new ExampleCommand());
 	// chooser.AddObject("My Auto", new MyAutoCommand());
-	//frc::SmartDashboard::PutData(Scheduler::GetInstance());
-	//frc::SmartDashboard::PutData(static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get()));
-	//frc::SmartDashboard::PutData(static_cast<RopeClimber*>(GetInstance()->getRopeClimber().get()));
+	frc::SmartDashboard::PutData(Scheduler::GetInstance());
+	frc::SmartDashboard::PutData(GetInstance()->getDriveTrain().get());
+	frc::SmartDashboard::PutData(GetInstance()->getRopeClimber().get());
 
 	//static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->Reset();
 	//static_cast<RopeClimber*>(GetInstance()->getRopeClimber().get())->Stop();
+
+	GetInstance()->getDriveTrain().get()->Reset();
+	GetInstance()->getRopeClimber().get()->Stop();
 
 	std::thread visionThread(VisionThread);
 	visionThread.detach();
@@ -120,15 +127,15 @@ void Robot::TestPeriodic() {
 	frc::LiveWindow::GetInstance()->Run();
 }
 
-std::shared_ptr <frc::Subsystem> Robot::getExampleSubsystem() {
+std::shared_ptr<ExampleSubsystem> Robot::getExampleSubsystem() {
 	return exampleSubsystem;
 }
 
-std::shared_ptr <frc::Subsystem> Robot::getDriveTrain() {
+std::shared_ptr<DriveTrain> Robot::getDriveTrain() {
 	return driveTrain;
 }
 
-std::shared_ptr <frc::Subsystem> Robot::getRopeClimber() {
+std::shared_ptr<RopeClimber> Robot::getRopeClimber() {
 	return ropeClimber;
 }
 

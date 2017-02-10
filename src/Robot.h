@@ -28,9 +28,9 @@ public:
 	void TeleopPeriodic() override;
 	void TestPeriodic() override;
 	std::unique_ptr<frc::Command> autonomousCommand;
-	std::shared_ptr<frc::Subsystem> getExampleSubsystem();
-	std::shared_ptr<frc::Subsystem> getDriveTrain();
-	std::shared_ptr<frc::Subsystem> getRopeClimber();
+	std::shared_ptr<ExampleSubsystem> getExampleSubsystem();
+	std::shared_ptr<DriveTrain> getDriveTrain();
+	std::shared_ptr<RopeClimber> getRopeClimber();
 	std::shared_ptr<OI> getOI();
 	static Robot *GetInstance();
 
@@ -38,9 +38,9 @@ public:
 	const static int CAMERA_IMG_HEIGHT = 240;
 
 private:
-	std::shared_ptr <frc::Subsystem> exampleSubsystem;
-	std::shared_ptr <frc::Subsystem> driveTrain;
-	std::shared_ptr <frc::Subsystem> ropeClimber;
+	std::shared_ptr<ExampleSubsystem> exampleSubsystem;
+	std::shared_ptr<DriveTrain> driveTrain;
+	std::shared_ptr<RopeClimber> ropeClimber;
 	std::shared_ptr<OI> oi;
 	frc::SendableChooser<frc::Command*> chooser;
 	static void VisionThread();

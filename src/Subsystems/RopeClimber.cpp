@@ -1,5 +1,5 @@
 #include "RopeClimber.h"
-
+#include "../RobotMap.h"
 
 RopeClimber::RopeClimber() : Subsystem("RopeClimber") {
 	left_motor = std::make_shared<CANTalon>(LEFT_CLIMBER_MOTOR);

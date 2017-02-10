@@ -1,4 +1,6 @@
 #include "DriveTrain.h"
+#include "../Commands/DriveWithController.h"
+#include "../RobotMap.h"
 
 DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	x = 0;
@@ -72,7 +74,7 @@ void DriveTrain::TurnToDegree(double angle) {
     currentAngle = gyro->GetAngle();
 }
 
-void DriveTrain::PIDWrite(float output) {
+void DriveTrain::PIDWrite(double output) {
 	rotateToAngleRate = output;
 }
 

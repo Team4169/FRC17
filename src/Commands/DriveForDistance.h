@@ -2,7 +2,6 @@
 #define DRIVE_FOR_DISTANCE_H
 
 #include <Commands/Command.h>
-#include "../Robot.h"
 
 class DriveForDistance: public frc::Command {
 public:
@@ -13,8 +12,8 @@ public:
 	void End() override;
 	void Interrupted() override;
 private:
-	double distance;
 	double angle;
+	double distance;
 };
 
 #endif  // EXAMPLE_COMMAND_H

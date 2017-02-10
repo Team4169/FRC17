@@ -45,12 +45,12 @@ void GripPipeline::Process(cv::Mat& source0){
 	cvErode(cvErodeSrc, cvErodeKernel, cvErodeAnchor, cvErodeIterations, cvErodeBordertype, cvErodeBordervalue, this->cvErodeOutput);
 	//Step Mask0:
 	//input
-	cv::Mat maskInput = source0;
-	cv::Mat maskMask = cvErodeOutput;
-	mask(maskInput, maskMask, this->maskOutput);
+	//cv::Mat maskInput = source0;
+	//cv::Mat maskMask = cvErodeOutput;
+	//mask(maskInput, maskMask, this->maskOutput);
 	//Step Blur0:
 	//input
-	cv::Mat blurInput = maskOutput;
+	cv::Mat blurInput = cvErodeOutput;
 	BlurType blurType = BlurType::BOX;
 	double blurRadius = 1.8018018018018018;  // default Double
 	blur(blurInput, blurType, blurRadius, this->blurOutput);
@@ -61,8 +61,6 @@ void GripPipeline::Process(cv::Mat& source0){
 	//Step Find_Contours0:
 	//input
 	cv::Mat findContoursInput = desaturateOutput;
-	std::vector<cv::Point>  h;
-	cv::Mat m;
 	//bool findContoursExternalOnly = false;  // default Boolean
 	std::vector<cv::Vec4i> hierarchy;
 	int mode = cv::RETR_LIST;
