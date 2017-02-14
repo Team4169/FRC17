@@ -45,6 +45,7 @@ public:
 	void Reset();
 	void TurnToDegree(double angle);
 	void PIDWrite(double output);
+	void motorDrive(int port);
 	AHRS* getAHRS();
 	double getCurrentAngle();
 	bool getAutoAlignMode();

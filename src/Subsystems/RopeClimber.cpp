@@ -2,8 +2,7 @@
 #include "../RobotMap.h"
 
 RopeClimber::RopeClimber() : Subsystem("RopeClimber") {
-	left_motor = std::make_shared<CANTalon>(LEFT_CLIMBER_MOTOR);
-	right_motor = std::make_shared<CANTalon>(RIGHT_CLIMBER_MOTOR);
+	motor = std::make_shared<CANTalon>(CLIMBER_MOTOR);
 }
 
 void RopeClimber::InitDefaultCommand() {
@@ -15,16 +14,15 @@ void RopeClimber::InitDefaultCommand() {
 // here. Call these from Commands.
 
 void RopeClimber::Up(){
-	left_motor->Set(1);
-	right_motor->Set(-1);
+	motor->Set(0.5);
 }
 
 void RopeClimber::Down(){
-	left_motor->Set(-1);
-	right_motor->Set(1);
+	motor->Set(-0.5);
+
 }
 
 void RopeClimber::Stop(){
-	left_motor->Set(0);
-	right_motor->Set(0);
+	motor->Set(0);
+
 }

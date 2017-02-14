@@ -14,8 +14,8 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	right_back_motor = std::make_shared<CANTalon>(RIGHT_BACK_MOTOR);
 
 	robotdrive = std::make_shared<RobotDrive>(left_front_motor, left_back_motor, right_front_motor, right_back_motor);
-	robotdrive->SetInvertedMotor(RobotDrive::kFrontLeftMotor, true);
-	robotdrive->SetInvertedMotor(RobotDrive::kRearLeftMotor, true);
+	robotdrive->SetInvertedMotor(RobotDrive::kFrontRightMotor, true);
+	robotdrive->SetInvertedMotor(RobotDrive::kRearRightMotor, true);
 
 	gyro = std::make_shared<AnalogGyro>(ANALOG_GYRO);
 
@@ -42,17 +42,37 @@ void DriveTrain::Drive(std::shared_ptr<XboxController> joy){
 	x = joy->GetX(GenericHID::kLeftHand);
 	y = joy->GetY(GenericHID::kLeftHand);
 
-	if (x < 0.2){
+
+
+	if(fabs(x) < 0.2){
 		x = 0;
 	}
 
-	if (y < 0.2){
+	if(fabs(y) < 0.2){
 		y = 0;
 	}
+	SmartDashboard::PutNumber("JoyX", x);
+	SmartDashboard::PutNumber("JoyY", y);
 
 	rotation = joy->GetTriggerAxis(GenericHID::kRightHand) - joy->GetTriggerAxis(GenericHID::kLeftHand);
 
 	robotdrive->MecanumDrive_Cartesian(x, y, rotation);
+}
+
+void DriveTrain::motorDrive(int port){
+	switch(port){
+	case 1:
+		left_front_motor->Set(0.3);
+		break;
+	case 2:
+		left_back_motor->Set(-0.3);
+				break;
+	case 3:
+		right_front_motor->Set(0.3);
+				break;
+	case 4:
+		right_back_motor->Set(-0.3);
+	}
 }
 
 void DriveTrain::DriveInput(double x, double y, double rotation) {
