@@ -8,7 +8,8 @@ constexpr int LEFT_FRONT_MOTOR = 4; //y (left front motor)
 
 constexpr int CLIMBER_MOTOR = 5;
 
-constexpr int ANALOG_GYRO = 6;
+constexpr int A_Button = 1;
+constexpr int B_Button = 2;
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking

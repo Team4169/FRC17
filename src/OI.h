@@ -1,8 +1,6 @@
 #include <XboxController.h>
 #include <Buttons/JoystickButton.h>
 
-
-
 #ifndef OI_H
 #define OI_H
 
@@ -13,7 +11,7 @@ public:
 private:
 	std::shared_ptr<XboxController> controller;
 	std::shared_ptr<JoystickButton> a,
-		b, x, y, bumper, bumper2;
+		b;
 };
 
 #endif  // OI_H
