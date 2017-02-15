@@ -8,8 +8,6 @@
 #include <AHRS.h>
 #include <math.h>
 
-#include "../RobotMap.h"
-#include "../Commands/DriveWithController.h"
 
 class DriveTrain : public Subsystem, PIDOutput{
 private:
@@ -17,6 +15,7 @@ private:
 	// for methods that implement subsystem capabilities
 	double x, y;
 	double rotation;
+	bool autoAlignEnabled;
 
 	std::shared_ptr<AnalogGyro> gyro;
 	AHRS *ahrs;
@@ -45,9 +44,12 @@ public:
 	void DriveInput(double x, double y, double rotation);
 	void Reset();
 	void TurnToDegree(double angle);
-	void PIDWrite(float output);
+	void PIDWrite(double output);
+	void motorDrive(int port);
 	AHRS* getAHRS();
 	double getCurrentAngle();
+	bool getAutoAlignMode();
+	void setAutoAlignMode(bool on);
 };
 
 #endif  // DriveTrain_H

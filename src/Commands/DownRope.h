@@ -2,7 +2,6 @@
 #define DownRope_H
 
 #include <Commands/Command.h>
-#include "../Robot.h"
 
 class DownRope : public frc::Command {
 public:
