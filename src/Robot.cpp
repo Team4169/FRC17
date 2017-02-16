@@ -1,5 +1,5 @@
 #include "Robot.h"
-#include <GripPipeline.h>
+#include "../GripPipeline.h"
 
 static Robot *mRobotPointer = NULL;
 

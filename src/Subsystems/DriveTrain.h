@@ -31,6 +31,8 @@ private:
 
     double currentAngle;
 
+    double speedModifier;
+
     constexpr static double kP = 0.03f,
 			kI = 0.00f,
 			kD = 0.00f,
@@ -43,6 +45,7 @@ public:
 	void Drive(std::shared_ptr<XboxController> joy);
 	void DriveInput(double x, double y, double rotation);
 	void Reset();
+	void setSpeedModifier(double mod);
 	void TurnToDegree(double angle);
 	void PIDWrite(double output);
 	void motorDrive(int port);

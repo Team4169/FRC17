@@ -7,6 +7,7 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	y = 0;
 	rotation = 0;
 	autoAlignEnabled = false;
+	speedModifier = 1;
 
 	left_front_motor = std::make_shared<CANTalon>(LEFT_FRONT_MOTOR);
 	left_back_motor = std::make_shared<CANTalon>(LEFT_BACK_MOTOR);
@@ -17,7 +18,7 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	robotdrive->SetInvertedMotor(RobotDrive::kFrontRightMotor, true);
 	robotdrive->SetInvertedMotor(RobotDrive::kRearRightMotor, true);
 
-	ahrs = new AHRS(SPI::Port::kMXP);
+	ahrs = new AHRS(SerialPort::Port::kUSB2);
 	turnController = new PIDController(kP, kI, kD, kF, ahrs, this);
 
 	rotateToAngleRate = 0;
@@ -54,7 +55,7 @@ void DriveTrain::Drive(std::shared_ptr<XboxController> joy){
 
 	rotation = joy->GetTriggerAxis(GenericHID::kRightHand) - joy->GetTriggerAxis(GenericHID::kLeftHand);
 
-	robotdrive->MecanumDrive_Cartesian(x, y, rotation);
+	robotdrive->MecanumDrive_Cartesian(x*speedModifier, y*speedModifier, rotation);
 }
 
 void DriveTrain::motorDrive(int port){
@@ -75,8 +76,12 @@ void DriveTrain::motorDrive(int port){
 
 void DriveTrain::DriveInput(double x, double y, double rotation) {
 
-	robotdrive->MecanumDrive_Cartesian(x, y, rotation);
+	robotdrive->MecanumDrive_Cartesian(x*speedModifier, y*speedModifier, rotation);
 
+}
+
+void DriveTrain::setSpeedModifier(double mod){
+	speedModifier = mod;
 }
 
 void DriveTrain::Reset(){
