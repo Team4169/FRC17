@@ -1,15 +1,15 @@
 #include "TurnDegrees.h"
+#include "../Robot.h"
 
-static DriveTrain *getDriveTrain() {
-	Robot *robot = Robot::GetInstance();
-	std::shared_ptr<frc::Subsystem> sub = robot->getDriveTrain();
-	return static_cast<DriveTrain *>(sub.get());
+static DriveTrain* getDriveTrain() {
+	return Robot::GetInstance()->getDriveTrain().get();
 }
 
-TurnDegrees::TurnDegrees(double angle) {
+TurnDegrees::TurnDegrees(double angle): desiredAngle(angle) {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(Robot::chassis.get());
-	desiredAngle = angle;
+
+	Requires(getDriveTrain());
 }
 
 // Called just before this Command runs the first time

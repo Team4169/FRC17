@@ -4,14 +4,13 @@
 #include <Commands/Subsystem.h>
 #include <CANTalon.h>
 
-#include "../RobotMap.h"
+
 
 class RopeClimber : public Subsystem {
 private:
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
-	std::shared_ptr<CANTalon> left_motor,
-		right_motor;
+	std::shared_ptr<CANTalon> motor;
 public:
 	RopeClimber();
 	void InitDefaultCommand();

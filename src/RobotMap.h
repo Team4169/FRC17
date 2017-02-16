@@ -1,13 +1,12 @@
 #ifndef ROBOTMAP_H
 #define ROBOTMAP_H
 
-constexpr int LEFT_FRONT_MOTOR = 0;
-constexpr int LEFT_BACK_MOTOR = 0;
-constexpr int RIGHT_FRONT_MOTOR = 0;
-constexpr int RIGHT_BACK_MOTOR = 0;
+constexpr int RIGHT_FRONT_MOTOR = 1; //a (right front motor)
+constexpr int LEFT_BACK_MOTOR = 2; //b (correct)
+constexpr int RIGHT_BACK_MOTOR = 3; //x (right back motor)
+constexpr int LEFT_FRONT_MOTOR = 4; //y (left front motor)
 
-constexpr int LEFT_CLIMBER_MOTOR = 0;
-constexpr int RIGHT_CLIMBER_MOTOR = 0;
+constexpr int CLIMBER_MOTOR = 5;
 
 constexpr int A_Button = 1;
 constexpr int B_Button = 2;

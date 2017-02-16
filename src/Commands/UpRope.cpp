@@ -1,9 +1,8 @@
 #include "UpRope.h"
+#include "../Robot.h"
 
-static RopeClimber *getRopeClimber() {
-	Robot *robot = Robot::GetInstance();
-	std::shared_ptr<frc::Subsystem> sub = robot->getRopeClimber();
-	return static_cast<RopeClimber *>(sub.get());
+static RopeClimber* getRopeClimber() {
+	return Robot::GetInstance()->getRopeClimber().get();
 }
 
 UpRope::UpRope() : Command("UpRope"){

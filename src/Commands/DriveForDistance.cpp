@@ -1,17 +1,15 @@
 #include "DriveForDistance.h"
+#include "../Robot.h"
 #include <math.h>
 
-static DriveTrain *getDriveTrain() {
-	Robot *robot = Robot::GetInstance();
-	std::shared_ptr<frc::Subsystem> sub = robot->getDriveTrain();
-	return static_cast<DriveTrain *>(sub.get());
+static DriveTrain* getDriveTrain() {
+	return Robot::GetInstance()->getDriveTrain().get();
 }
 
-DriveForDistance::DriveForDistance(double a, double d) {
+DriveForDistance::DriveForDistance(double a, double d) : angle(a), distance(d) {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(Robot::chassis.get());
-	angle = a;
-	distance = d;
+	Requires(getDriveTrain());
 }
 
 // Called just before this Command runs the first time

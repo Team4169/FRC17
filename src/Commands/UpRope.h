@@ -2,7 +2,7 @@
 #define UpRope_H
 
 #include <Commands/Command.h>
-#include "../Robot.h"
+
 
 class UpRope : public frc::Command {
 public:

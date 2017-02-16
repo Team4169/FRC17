@@ -1,9 +1,8 @@
 #include "DriveWithController.h"
+#include "../Robot.h"
 
-static DriveTrain *getDriveTrain() {
-	Robot *robot = Robot::GetInstance();
-	std::shared_ptr<frc::Subsystem> sub = robot->getDriveTrain();
-	return static_cast<DriveTrain *>(sub.get());
+static DriveTrain* getDriveTrain() {
+	return Robot::GetInstance()->getDriveTrain().get();
 }
 
 DriveWithController::DriveWithController() : Command("DriveWithController") {
