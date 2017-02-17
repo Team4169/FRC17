@@ -14,7 +14,6 @@
 #include <vector>
 #include <string>
 #include <math.h>
-#include <NetworkTables/NetworkTable.h>
 
 namespace grip {
 
@@ -43,7 +42,6 @@ class GripPipeline : public frc::VisionPipeline {
 		cv::Mat rectanglesMat;
 		std::vector<std::vector<cv::Point> > findContoursOutput;
 		std::vector<cv::Point> approxPolyOutput;
-		std::shared_ptr<NetworkTable> table;
 		void hsvThreshold(cv::Mat &, double [], double [], double [], cv::Mat &);
 		void cvDilate(cv::Mat &, cv::Mat &, cv::Point &, double , int , cv::Scalar &, cv::Mat &);
 		void cvErode(cv::Mat &, cv::Mat &, cv::Point &, double , int , cv::Scalar &, cv::Mat &);

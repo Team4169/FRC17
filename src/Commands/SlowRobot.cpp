@@ -5,7 +5,7 @@
 SlowRobot::SlowRobot() {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(Robot::chassis.get());
-	//Requires(Robot::GetInstance()->getDriveTrain().get());
+	Requires(Robot::GetInstance()->getDriveTrain().get());
 }
 
 // Called just before this Command runs the first time

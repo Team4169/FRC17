@@ -8,12 +8,10 @@ Robot::Robot(){
 	if(mRobotPointer == NULL){
 		mRobotPointer = this;
 	}
-	table = NetworkTable::GetTable("Vision_Info");
 }
 
 void Robot::VisionThread(){
-	try{
-    cs::UsbCamera camera = CameraServer::GetInstance()->StartAutomaticCapture();
+        cs::UsbCamera camera = CameraServer::GetInstance()->StartAutomaticCapture();
 	camera.SetResolution(CAMERA_IMG_WIDTH, CAMERA_IMG_HEIGHT);
 	camera.SetExposureManual(0);
 	cs::CvSink cvSink = CameraServer::GetInstance()->GetVideo();
@@ -34,9 +32,6 @@ void Robot::VisionThread(){
 		outputStream.PutFrame(*(visionPipeline->getRectanglesMat()));
 		outputStream2.PutFrame(*(visionPipeline->getContoursMat()));
 	}
-	}catch(std::exception e){
-		DriverStation::ReportError(e.what());
-	}
 
 
 }
@@ -47,19 +42,17 @@ void Robot::RobotInit() {
 	driveTrain = std::make_shared<DriveTrain>();
 	ropeClimber = std::make_shared<RopeClimber>();
 	oi = std::make_shared<OI>();
-
 	//chooser.AddDefault("Default Auto", new ExampleCommand());
 	// chooser.AddObject("My Auto", new MyAutoCommand());
 	frc::SmartDashboard::PutData(Scheduler::GetInstance());
-	frc::SmartDashboard::PutData(driveTrain.get());
-	frc::SmartDashboard::PutData(ropeClimber.get());
+	frc::SmartDashboard::PutData(GetInstance()->getDriveTrain().get());
+	frc::SmartDashboard::PutData(GetInstance()->getRopeClimber().get());
 
 	//static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->Reset();
 	//static_cast<RopeClimber*>(GetInstance()->getRopeClimber().get())->Stop();
 
-	driveTrain->Reset();
-	ropeClimber->Stop();
-
+	GetInstance()->getDriveTrain().get()->Reset();
+	GetInstance()->getRopeClimber().get()->Stop();
 
 	std::thread visionThread(VisionThread);
 	visionThread.detach();
@@ -122,8 +115,7 @@ void Robot::TeleopPeriodic() {
 	//frc::SmartDashboard::PutNumber("Angle", static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->getAHRS()->GetAngle());
 	//frc::SmartDashboard::PutNumber("X Displacement", static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->getAHRS()->GetDisplacementX());
 	//frc::SmartDashboard::PutNumber("Y Displacement", static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->getAHRS()->GetDisplacementY());
-	frc::SmartDashboard::PutString("DirectionString", table->GetString("Direction", ""));
-	frc::SmartDashboard::PutNumber("Distance", table->GetNumber("Distance", 0));
+
 	frc::SmartDashboard::PutBoolean("A Button", GetInstance()->getOI()->getController()->GetAButton());
 	frc::SmartDashboard::PutBoolean("B Button", GetInstance()->getOI()->getController()->GetBButton());
 	frc::SmartDashboard::PutNumber("Right Trigger", GetInstance()->getOI()->getController()->GetTriggerAxis(GenericHID::kRightHand));

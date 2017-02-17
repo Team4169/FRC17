@@ -18,13 +18,7 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	robotdrive->SetInvertedMotor(RobotDrive::kFrontRightMotor, true);
 	robotdrive->SetInvertedMotor(RobotDrive::kRearRightMotor, true);
 
-	try{
 	ahrs = new AHRS(SerialPort::Port::kUSB2);
-	}catch(std::exception e){
-		std::string err_string = "Error: ";
-		err_string += e.what();
-		DriverStation::ReportError(err_string);
-	}
 	turnController = new PIDController(kP, kI, kD, kF, ahrs, this);
 
 	rotateToAngleRate = 0;
