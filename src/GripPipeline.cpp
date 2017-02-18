@@ -142,12 +142,12 @@ void GripPipeline::Process(cv::Mat& source0){
 			}
 		}
 
-		//table->PutNumber("DistanceX", distanceX);
-		//table->PutNumber("Direction", angle);
+		table->PutNumber("DistanceX", distanceX);
+		table->PutNumber("Direction", angle);
 		if(angle == 0){
-			//table->PutString("DirectionString", "Right");
+			table->PutString("DirectionString", "Right");
 		}else if(angle == 180){
-			//table->PutString("DirectionString", "Left");
+			table->PutString("DirectionString", "Left");
 		}
 		//calculate approximate y distance and then math it to magnitude and direction
 		}catch(std::exception e){

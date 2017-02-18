@@ -16,7 +16,7 @@ OI::OI() : controller(std::make_shared<XboxController>(0)){
 
 	a->WhenPressed(new UpRope());
 	b->WhenPressed(new DownRope());
-	//y->WhenPressed(new SlowRobot());
+	y->WhenPressed(new SlowRobot());
 
 }
 

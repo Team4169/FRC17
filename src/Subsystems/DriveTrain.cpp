@@ -59,7 +59,9 @@ void DriveTrain::Drive(std::shared_ptr<XboxController> joy){
 	SmartDashboard::PutNumber("JoyX", x);
 	SmartDashboard::PutNumber("JoyY", y);
 
-	rotation = joy->GetTriggerAxis(GenericHID::kRightHand) - joy->GetTriggerAxis(GenericHID::kLeftHand);
+	double adjustment = ((y>0)? 0.02 : 0);
+
+	rotation = joy->GetTriggerAxis(GenericHID::kRightHand) - joy->GetTriggerAxis(GenericHID::kLeftHand) - adjustment;
 
 	robotdrive->MecanumDrive_Cartesian(x*speedModifier, y*speedModifier, rotation);
 }
