@@ -7,6 +7,7 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	y = 0;
 	rotation = 0;
 	autoAlignEnabled = false;
+	speedModifier = 1;
 
 	left_front_motor = std::make_shared<CANTalon>(LEFT_FRONT_MOTOR);
 	left_back_motor = std::make_shared<CANTalon>(LEFT_BACK_MOTOR);
@@ -17,13 +18,22 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	robotdrive->SetInvertedMotor(RobotDrive::kFrontRightMotor, true);
 	robotdrive->SetInvertedMotor(RobotDrive::kRearRightMotor, true);
 
-	ahrs = new AHRS(SPI::Port::kMXP);
+	try{
+	ahrs = new AHRS(SerialPort::Port::kUSB);
+	}catch(std::exception e){
+		std::string err_string = "Error: ";
+		err_string += e.what();
+		DriverStation::ReportError(err_string);
+	}
 	turnController = new PIDController(kP, kI, kD, kF, ahrs, this);
 
 	rotateToAngleRate = 0;
-	currentAngle = 0;
 
     turnController->Enable();
+
+    auto_distance = 0;
+    auto_accel_distance = 0;
+    auto_accel_end_speed = 0;
 }
 
 void DriveTrain::InitDefaultCommand() {
@@ -40,8 +50,6 @@ void DriveTrain::Drive(std::shared_ptr<XboxController> joy){
 	x = joy->GetX(GenericHID::kLeftHand);
 	y = joy->GetY(GenericHID::kLeftHand);
 
-
-
 	if(fabs(x) < 0.2){
 		x = 0;
 	}
@@ -52,7 +60,17 @@ void DriveTrain::Drive(std::shared_ptr<XboxController> joy){
 	SmartDashboard::PutNumber("JoyX", x);
 	SmartDashboard::PutNumber("JoyY", y);
 
+
+	double adjustment = ((y>0)? 0.02 : 0);
+
+	rotation = joy->GetTriggerAxis(GenericHID::kRightHand) - joy->GetTriggerAxis(GenericHID::kLeftHand) - adjustment;
+	if (joy->GetYButton()){
+		x /= 4;
+		y /= 4;
+	}
+
 	rotation = joy->GetTriggerAxis(GenericHID::kRightHand) - joy->GetTriggerAxis(GenericHID::kLeftHand);
+
 
 	robotdrive->MecanumDrive_Cartesian(x, y, rotation);
 }
@@ -79,6 +97,15 @@ void DriveTrain::DriveInput(double x, double y, double rotation) {
 
 }
 
+void DriveTrain::DriveInputCartesian(double x, double y, double rotation) {
+	robotdrive->MecanumDrive_Cartesian(x, y, rotation);
+}
+
+void DriveTrain::DriveInputPolar(double speed, double angle, double rotation) {
+	robotdrive->MecanumDrive_Polar(speed, angle, rotation);
+
+}
+
 void DriveTrain::Reset(){
 	robotdrive->MecanumDrive_Cartesian(0, 0 , 0);
 }
@@ -87,28 +114,42 @@ void DriveTrain::TurnToDegree(double angle) {
 	turnController->SetSetpoint(angle);
 	//Turns the robot to the angle given. Angle 0 is the angle during which the robot was initialized in,
 	//not the direction the robot is facing
-    robotdrive->MecanumDrive_Polar(0, angle, rotateToAngleRate);
-
-    currentAngle = ahrs->GetAngle();
+    robotdrive->MecanumDrive_Polar(0, 0, rotateToAngleRate);
 }
 
 void DriveTrain::PIDWrite(double output) {
 	rotateToAngleRate = output;
 }
 
+void DriveTrain::setAutoAccelerationDistance(float dist){
+	auto_accel_distance = dist;
+}
+
+float DriveTrain::getAutoAccelerationDistance(){
+	return auto_accel_distance;
+}
+
+void DriveTrain::setAutoDistance(float dist) {
+	auto_distance = dist;
+}
+
+float DriveTrain::getAutoDistance() {
+	return auto_distance;
+}
+
+void DriveTrain::setAutoAccelCurrentSpeed(float speed){
+	auto_accel_end_speed = speed;
+}
+
+float DriveTrain::getAutoAccelCurrentSpeed() {
+	return auto_accel_end_speed;
+}
+
 double DriveTrain::getCurrentAngle() {
-	return currentAngle;
+	return ahrs->GetAngle();
 }
 
 AHRS* DriveTrain::getAHRS(){
 	return ahrs;
-}
-
-bool DriveTrain::getAutoAlignMode(){
-	return autoAlignEnabled;
-}
-
-void DriveTrain::setAutoAlignMode(bool on){
-	autoAlignEnabled = on;
 }
 

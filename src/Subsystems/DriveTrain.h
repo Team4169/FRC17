@@ -29,27 +29,39 @@ private:
 		right_back_motor;
 	std::shared_ptr<RobotDrive> robotdrive;
 
+
     double currentAngle;
 
-    constexpr static double kP = 0.03f,
+    constexpr static double
+			kP = 100.0f,
 			kI = 0.00f,
 			kD = 0.00f,
-			kF = 0.00f,
-			kToleranceDegrees = 2.00f;
+			kF = 0.00f;
+    float auto_accel_distance,
+		auto_distance,
+		auto_accel_end_speed;
 
 public:
 	DriveTrain();
 	void InitDefaultCommand();
 	void Drive(std::shared_ptr<XboxController> joy);
-	void DriveInput(double x, double y, double rotation);
+	void DriveInputCartesian(double x, double y, double rotation);
+	void DriveInputPolar(double speed, double angle, double rotation);
 	void Reset();
+	void setSpeedModifier(double mod);
 	void TurnToDegree(double angle);
 	void PIDWrite(double output);
 	void motorDrive(int port);
 	AHRS* getAHRS();
 	double getCurrentAngle();
-	bool getAutoAlignMode();
-	void setAutoAlignMode(bool on);
+	void setAutoAccelerationDistance(float dist);
+	float getAutoAccelerationDistance();
+	void setAutoDistance(float dist);
+	float getAutoDistance();
+	void setAutoAccelCurrentSpeed(float speed);
+	float getAutoAccelCurrentSpeed();
+
+	constexpr static double kToleranceDegrees = 5.00f;
 };
 
 #endif  // DriveTrain_H
