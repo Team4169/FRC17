@@ -55,7 +55,7 @@ class GripPipeline : public frc::VisionPipeline {
 	public:
 		static constexpr double APPROXIMATION_ACCURACY_THRESHOLD = 5.0;
 		static constexpr double RECT_W_TO_L_RATIO = 0.4;
-		static constexpr double RECT_W_TO_L_RATIO_THRESHOLD = 0.1;
+		static constexpr double RECT_W_TO_L_RATIO_THRESHOLD = 0.2;
 
 		GripPipeline();
 		void Process(cv::Mat& source0);

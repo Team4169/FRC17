@@ -19,7 +19,7 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	robotdrive->SetInvertedMotor(RobotDrive::kRearRightMotor, true);
 
 	try{
-	ahrs = new AHRS(SerialPort::Port::kUSB2);
+	ahrs = new AHRS(SerialPort::Port::kUSB);
 	}catch(std::exception e){
 		std::string err_string = "Error: ";
 		err_string += e.what();

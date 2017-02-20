@@ -24,8 +24,8 @@ void GripPipeline::Process(cv::Mat& source0){
 	//Replace HSV with RGB. Red 45-54 (49 actual value), Green 255, Blue 0?
 	cv::Mat hsvThresholdInput = source0;
 	double hsvThresholdHue[] = {70.0, 90.0};
-	double hsvThresholdSaturation[] = {0.0, 255.0};
-	double hsvThresholdValue[] = {50.0, 255.0};
+	double hsvThresholdSaturation[] = {10.0, 255.0};
+	double hsvThresholdValue[] = {30.0, 255.0};
 	hsvThreshold(hsvThresholdInput, hsvThresholdHue, hsvThresholdSaturation, hsvThresholdValue, this->hsvThresholdOutput);
 	//Step CV_dilate0:
 	//input
@@ -80,34 +80,34 @@ void GripPipeline::Process(cv::Mat& source0){
 	int largestRectsIndex[2] = {-1, -1};
 	//finds and stores the bounding rects of the largest 2 contours
 	SmartDashboard::PutNumber("Vision Processing", 8);
+
+	int size = (signed int)findContoursOutput.size();
+
 	for(int j=0;j<2;j++){
-		int currentContourIndex = 0;
+		int currentContourIndex = -2;
 		double area = 0;
-		int size = (signed int)findContoursOutput.size();
 		for(int i = 0; i<size; i++){
 		   if(area < cv::contourArea(findContoursOutput[i]) && largestRectsIndex[0] != i){
-			   area = cv::contourArea(findContoursOutput[i]);
-			   currentContourIndex = i;
+			   double lwratio = ((double)(boundingRect(findContoursOutput[i]).width))/((double)(boundingRect(findContoursOutput[i]).height));
+			   	if(lwratio < RECT_W_TO_L_RATIO + RECT_W_TO_L_RATIO_THRESHOLD && lwratio > RECT_W_TO_L_RATIO - RECT_W_TO_L_RATIO_THRESHOLD){
+			   		area = cv::contourArea(findContoursOutput[i]);
+			   	    currentContourIndex = i;
+			   	}
 		   }
-	      /* cv::Scalar color = cv::Scalar(255, 255, 255);
-	       cv::drawContours(contoursMat, findContoursOutput, i, color, 2, 8, hierarchy, 0, cv::Point() );
-	       cv::Rect rectangle = boundingRect(findContoursOutput[i]);
-	       double lwratio = double(rectangle.width)/double(rectangle.height);
-	       if(lwratio > RECT_L_W_RATIO - RECT_L_W_RATIO_THRESHOLD && lwratio < RECT_L_W_RATIO + RECT_L_W_RATIO_THRESHOLD){
-	    	   cv::rectangle(rectanglesMat, rectangle, color, 1, 8, 0);
-	       }
-			*/
+
 	     }
 		largestRectsIndex[j] = currentContourIndex;
 		largestRectangles[j] = boundingRect(findContoursOutput[currentContourIndex]);
 	}
+
+
 	//draws the rectangles around the largest 2 contours if their sides match a certain ratio
 	//plus or minus a given threshold for error
 	for(int i=0;i<2;i++){
+		if(size<2)
+			continue;
 		cv::Scalar color = cv::Scalar(255, 255, 255);
-		double lwratio = ((double)largestRectangles[i].width)/((double)largestRectangles[i].height);
-		if(lwratio < RECT_W_TO_L_RATIO + RECT_W_TO_L_RATIO_THRESHOLD && lwratio > RECT_W_TO_L_RATIO - RECT_W_TO_L_RATIO_THRESHOLD)
-			cv::rectangle(rectanglesMat, largestRectangles[i], color, 1, 8, 0);
+		cv::rectangle(rectanglesMat, largestRectangles[i], color, 1, 8, 0);
 	}
 	SmartDashboard::PutNumber("Vision Processing", 9);
 

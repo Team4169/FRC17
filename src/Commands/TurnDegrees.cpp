@@ -5,7 +5,7 @@ static DriveTrain* getDriveTrain() {
 	return Robot::GetInstance()->getDriveTrain().get();
 }
 
-TurnDegrees::TurnDegrees(double angle): desiredAngle(angle) {
+TurnDegrees::TurnDegrees(double angle): Command("TurnDegrees"), desiredAngle(angle) {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(Robot::chassis.get());
 
@@ -24,7 +24,7 @@ void TurnDegrees::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool TurnDegrees::IsFinished() {
-	if(getDriveTrain()->getCurrentAngle() == desiredAngle){
+	if(fabs(getDriveTrain()->getCurrentAngle() - desiredAngle) <= 20){
 		return true;
 	} else {
 		return false;

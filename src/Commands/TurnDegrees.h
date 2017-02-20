@@ -4,7 +4,7 @@
 #include <Commands/Command.h>
 
 
-class TurnDegrees : frc::Command {
+class TurnDegrees : public frc::Command {
 private:
 	double desiredAngle;
 public:

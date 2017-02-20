@@ -1,5 +1,8 @@
 #include "Robot.h"
 #include "../GripPipeline.h"
+#include <thread>
+#include <chrono>
+#include "Commands/TurnDegrees.h"
 
 static Robot *mRobotPointer = NULL;
 
@@ -15,7 +18,7 @@ void Robot::VisionThread(){
 
     cs::UsbCamera camera = CameraServer::GetInstance()->StartAutomaticCapture();
 	camera.SetResolution(CAMERA_IMG_WIDTH, CAMERA_IMG_HEIGHT);
-	camera.SetExposureManual(0);
+	camera.SetExposureManual(15);
 	cs::CvSink cvSink = CameraServer::GetInstance()->GetVideo();
 
 	cs::CvSource outputStream = CameraServer::GetInstance()->
@@ -23,6 +26,8 @@ void Robot::VisionThread(){
 	cv::Mat mat;
 	grip::GripPipeline* visionPipeline = new grip::GripPipeline();
 	while(true){
+		camera.SetExposureManual((int)SmartDashboard::GetNumber("CameraExposure", 15));
+		std::this_thread::sleep_for(std::chrono::milliseconds(20));
 	        if (cvSink.GrabFrame(mat) == 0) {
 		        // Send the output the error.
 		        outputStream.NotifyError(cvSink.GetError());
@@ -43,13 +48,17 @@ void Robot::RobotInit() {
 	ropeClimber = std::make_shared<RopeClimber>();
 	oi = std::make_shared<OI>();
 
-	//chooser.AddDefault("Default Auto", new ExampleCommand());
-	// chooser.AddObject("My Auto", new MyAutoCommand());
+	//chooser.AddDefault("90 Degrees", new TurnDegrees(90));
+	//chooser.AddObject("45 Degrees", new TurnDegrees(45));
 	frc::SmartDashboard::PutData(Scheduler::GetInstance());
 	frc::SmartDashboard::PutData(driveTrain.get());
 	frc::SmartDashboard::PutData(ropeClimber.get());
+	frc::SmartDashboard::PutBoolean("Gyro Connected?", driveTrain->getAHRS()->IsConnected());
+	frc::SmartDashboard::PutBoolean("Gyro Calibrating?", driveTrain->getAHRS()->IsCalibrating());
+	frc::SmartDashboard::PutNumber("CameraExposure", 15);
 
 	driveTrain->Reset();
+	driveTrain->getAHRS()->Reset();
 	ropeClimber->Stop();
 
 
@@ -64,10 +73,15 @@ void Robot::RobotInit() {
 	 * the robot is disabled.
 	 */
 void Robot::DisabledInit() {
+
 }
 
 void Robot::DisabledPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
+	frc::SmartDashboard::PutNumber("Angle", driveTrain->getAHRS()->GetAngle());
+	frc::SmartDashboard::PutNumber("X Displacement", driveTrain->getAHRS()->GetDisplacementX());
+	frc::SmartDashboard::PutNumber("Y Displacement", driveTrain->getAHRS()->GetDisplacementY());
+	frc::SmartDashboard::PutData("Gyro", driveTrain->getAHRS());
 }
 
 	/**
@@ -89,10 +103,12 @@ void Robot::AutonomousInit() {
 	else {
 		autonomousCommand.reset(new ExampleCommand());
 	} */
-	autonomousCommand.reset(chooser.GetSelected());
+	/*autonomousCommand.reset(chooser.GetSelected());
 	if (autonomousCommand.get() != nullptr) {
 		autonomousCommand->Start();
-	}
+	}*/
+	autonomousCommand.reset(new TurnDegrees(90));
+	autonomousCommand->Start();
 }
 void Robot::AutonomousPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
@@ -108,6 +124,7 @@ void Robot::TeleopInit() {
 	if (autonomousCommand.get() != nullptr) {
 		autonomousCommand->Cancel();
 	}
+	frc::SmartDashboard::PutBoolean("Gyro Connected?", driveTrain->getAHRS()->IsConnected());
 }
 void Robot::TeleopPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
