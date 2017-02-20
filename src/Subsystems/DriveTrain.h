@@ -33,11 +33,12 @@ private:
 
     double speedModifier;
 
-    constexpr static double kP = 0.03f,
+    constexpr static double
+			kP = 100.0f,
 			kI = 0.00f,
 			kD = 0.00f,
 			kF = 0.00f,
-			kToleranceDegrees = 2.00f;
+			kToleranceDegrees = 20.0f;
 
 public:
 	DriveTrain();

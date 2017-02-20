@@ -112,6 +112,7 @@ void Robot::AutonomousInit() {
 }
 void Robot::AutonomousPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
+	frc::SmartDashboard::PutBoolean("Gyro Connected?", driveTrain->getAHRS()->IsConnected());
 	frc::SmartDashboard::PutNumber("Angle", driveTrain->getAHRS()->GetAngle());
 	frc::SmartDashboard::PutNumber("X Displacement", driveTrain->getAHRS()->GetDisplacementX());
 	frc::SmartDashboard::PutNumber("Y Displacement", driveTrain->getAHRS()->GetDisplacementY());
@@ -128,6 +129,7 @@ void Robot::TeleopInit() {
 }
 void Robot::TeleopPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
+	frc::SmartDashboard::PutBoolean("Gyro Connected?", driveTrain->getAHRS()->IsConnected());
 	frc::SmartDashboard::PutNumber("Angle", driveTrain->getAHRS()->GetAngle());
 	frc::SmartDashboard::PutNumber("X Displacement", driveTrain->getAHRS()->GetDisplacementX());
 	frc::SmartDashboard::PutNumber("Y Displacement", driveTrain->getAHRS()->GetDisplacementY());
