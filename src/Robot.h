@@ -47,7 +47,6 @@ private:
 	std::shared_ptr<NetworkTable> table;
 	static void VisionThread();
 	std::unique_ptr<frc::Command> autonomousCommand;
-
 };
 
 

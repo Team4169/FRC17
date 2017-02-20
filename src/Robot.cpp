@@ -1,7 +1,8 @@
 #include "Robot.h"
-#include "../GripPipeline.h"
+
 #include <thread>
 #include <chrono>
+#include "GripPipeline.h"
 #include "Commands/TurnDegrees.h"
 
 static Robot *mRobotPointer = NULL;
@@ -61,6 +62,11 @@ void Robot::RobotInit() {
 	driveTrain->getAHRS()->Reset();
 	ropeClimber->Stop();
 
+	chooser.AddDefault("90 degrees", new TurnDegrees(90));
+	chooser.AddObject("45 degrees", new TurnDegrees(45));
+	chooser.AddObject("-45 degrees", new TurnDegrees(-45));
+	chooser.AddObject("-90 degrees", new TurnDegrees(-90));
+
 
 	//std::thread visionThread(VisionThread);
 	//visionThread.detach();
@@ -112,6 +118,7 @@ void Robot::AutonomousInit() {
 }
 void Robot::AutonomousPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
+  
 	frc::SmartDashboard::PutBoolean("Gyro Connected?", driveTrain->getAHRS()->IsConnected());
 	frc::SmartDashboard::PutNumber("Angle", driveTrain->getAHRS()->GetAngle());
 	frc::SmartDashboard::PutNumber("X Displacement", driveTrain->getAHRS()->GetDisplacementX());
@@ -129,6 +136,7 @@ void Robot::TeleopInit() {
 }
 void Robot::TeleopPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
+
 	frc::SmartDashboard::PutBoolean("Gyro Connected?", driveTrain->getAHRS()->IsConnected());
 	frc::SmartDashboard::PutNumber("Angle", driveTrain->getAHRS()->GetAngle());
 	frc::SmartDashboard::PutNumber("X Displacement", driveTrain->getAHRS()->GetDisplacementX());
@@ -141,6 +149,8 @@ void Robot::TeleopPeriodic() {
 	frc::SmartDashboard::PutNumber("Left Trigger", GetInstance()->getOI()->getController()->GetTriggerAxis(GenericHID::kLeftHand));
 	frc::SmartDashboard::PutNumber("X", GetInstance()->getOI()->getController()->GetX(GenericHID::kLeftHand));
 	frc::SmartDashboard::PutNumber("Y", GetInstance()->getOI()->getController()->GetY(GenericHID::kLeftHand));
+	frc::SmartDashboard::PutBoolean("X Button", oi->getController()->GetXButton());
+	frc::SmartDashboard::PutBoolean("Y Button", oi->getController()->GetYButton());
 }
 void Robot::TestPeriodic() {
 	frc::LiveWindow::GetInstance()->Run();

@@ -1,15 +1,15 @@
 #include "TurnDegrees.h"
+
 #include "../Robot.h"
 
-static DriveTrain* getDriveTrain() {
-	return Robot::GetInstance()->getDriveTrain().get();
+static std::shared_ptr<DriveTrain> getDriveTrain() {
+	return Robot::GetInstance()->getDriveTrain();
 }
 
-TurnDegrees::TurnDegrees(double angle): Command("TurnDegrees"), desiredAngle(angle) {
+TurnDegrees::TurnDegrees(double angle): Command("TurnDegrees"), desiredAngle(getDriveTrain()->getCurrentAngle() + angle) {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(Robot::chassis.get());
-
-	Requires(getDriveTrain());
+	Requires(getDriveTrain().get());
 }
 
 // Called just before this Command runs the first time
@@ -24,7 +24,7 @@ void TurnDegrees::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool TurnDegrees::IsFinished() {
-	if(fabs(getDriveTrain()->getCurrentAngle() - desiredAngle) <= 20){
+	if (fabs(getDriveTrain()->getCurrentAngle() - desiredAngle) < getDriveTrain()->kToleranceDegrees){
 		return true;
 	} else {
 		return false;
