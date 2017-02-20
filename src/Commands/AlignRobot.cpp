@@ -10,11 +10,13 @@ AlignRobot::AlignRobot() : Command("AlignRobot") {
 	// eg. Requires(Robot::chassis.get());
 	Requires(getDriveTrain().get());
 	table = NetworkTable::GetTable("Vision_Info");
-	direction = table->GetString("DirectionString");
+	direction = table->GetString("DirectionString", "");
 	if (direction == "Left"){
 		x = -0.1;
 	} else if (direction == "Right"){
 		x = 0.1;
+	} else {
+		End();
 	}
 }
 
@@ -30,7 +32,7 @@ void AlignRobot::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool AlignRobot::IsFinished() {
-	return direction != table->GetString("DirectionString");
+	return direction != table->GetString("DirectionString", "");
 }
 
 // Called once after isFinished returns true

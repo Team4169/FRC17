@@ -15,7 +15,6 @@ private:
 	// for methods that implement subsystem capabilities
 	double x, y;
 	double rotation;
-	bool autoAlignEnabled;
 
 	std::shared_ptr<AnalogGyro> gyro;
 	AHRS *ahrs;
@@ -51,7 +50,6 @@ public:
 	void setSpeedModifier(double mod);
 	void TurnToDegree(double angle);
 	void PIDWrite(double output);
-	void motorDrive(int port);
 	AHRS* getAHRS();
 	double getCurrentAngle();
 	void setAutoAccelerationDistance(float dist);

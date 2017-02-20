@@ -31,7 +31,7 @@ void SlowDown::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool SlowDown::IsFinished() {
-	if (getDriveTrain()->getAHRS()->GetRawAccelX() == 0 && getDriveTrain()->getAHRS()->GetRawAccelY() == 0){
+	if (getDriveTrain()->getAHRS()->GetRawAccelX() <= 0.1 && getDriveTrain()->getAHRS()->GetRawAccelY() <= 0.1){
 		return true;
 	} else {
 		return false;

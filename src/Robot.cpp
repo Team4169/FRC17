@@ -156,10 +156,6 @@ void Robot::TestPeriodic() {
 	frc::LiveWindow::GetInstance()->Run();
 }
 
-std::shared_ptr<ExampleSubsystem> Robot::getExampleSubsystem() {
-	return exampleSubsystem;
-}
-
 std::shared_ptr<DriveTrain> Robot::getDriveTrain() {
 	return driveTrain;
 }

@@ -6,8 +6,6 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	x = 0;
 	y = 0;
 	rotation = 0;
-	autoAlignEnabled = false;
-	speedModifier = 1;
 
 	left_front_motor = std::make_shared<CANTalon>(LEFT_FRONT_MOTOR);
 	left_back_motor = std::make_shared<CANTalon>(LEFT_BACK_MOTOR);
@@ -39,7 +37,7 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 void DriveTrain::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 	// SetDefaultCommand(new MySpecialCommand());
-	SetDefaultCommand(new DriveWithController);
+	SetDefaultCommand(new DriveWithController());
 }
 
 
@@ -57,8 +55,6 @@ void DriveTrain::Drive(std::shared_ptr<XboxController> joy){
 	if(fabs(y) < 0.2){
 		y = 0;
 	}
-	SmartDashboard::PutNumber("JoyX", x);
-	SmartDashboard::PutNumber("JoyY", y);
 
 
 	double adjustment = ((y>0)? 0.02 : 0);
