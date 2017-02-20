@@ -16,7 +16,13 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	robotdrive->SetInvertedMotor(RobotDrive::kFrontRightMotor, true);
 	robotdrive->SetInvertedMotor(RobotDrive::kRearRightMotor, true);
 
-	ahrs = new AHRS(SPI::Port::kMXP);
+	try{
+	ahrs = new AHRS(SerialPort::Port::kUSB);
+	}catch(std::exception e){
+		std::string err_string = "Error: ";
+		err_string += e.what();
+		DriverStation::ReportError(err_string);
+	}
 	turnController = new PIDController(kP, kI, kD, kF, ahrs, this);
 
 	rotateToAngleRate = 0;
@@ -50,12 +56,17 @@ void DriveTrain::Drive(std::shared_ptr<XboxController> joy){
 		y = 0;
 	}
 
+
+	double adjustment = ((y>0)? 0.02 : 0);
+
+	rotation = joy->GetTriggerAxis(GenericHID::kRightHand) - joy->GetTriggerAxis(GenericHID::kLeftHand) - adjustment;
 	if (joy->GetYButton()){
 		x /= 4;
 		y /= 4;
 	}
 
 	rotation = joy->GetTriggerAxis(GenericHID::kRightHand) - joy->GetTriggerAxis(GenericHID::kLeftHand);
+
 
 	robotdrive->MecanumDrive_Cartesian(x, y, rotation);
 }
@@ -76,12 +87,19 @@ void DriveTrain::motorDrive(int port){
 	}
 }
 
+void DriveTrain::DriveInput(double x, double y, double rotation) {
+
+	robotdrive->MecanumDrive_Cartesian(x, y, rotation);
+
+}
+
 void DriveTrain::DriveInputCartesian(double x, double y, double rotation) {
 	robotdrive->MecanumDrive_Cartesian(x, y, rotation);
 }
 
 void DriveTrain::DriveInputPolar(double speed, double angle, double rotation) {
 	robotdrive->MecanumDrive_Polar(speed, angle, rotation);
+
 }
 
 void DriveTrain::Reset(){
