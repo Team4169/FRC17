@@ -29,10 +29,14 @@ private:
 		right_back_motor;
 	std::shared_ptr<RobotDrive> robotdrive;
 
-    constexpr static double kP = 0.03f,
+
+    double currentAngle;
+
+    constexpr static double
+			kP = 100.0f,
 			kI = 0.00f,
 			kD = 0.00f,
-			kF = 0.00f,
+			kF = 0.00f;
     float auto_accel_distance,
 		auto_distance,
 		auto_accel_end_speed;
@@ -44,6 +48,7 @@ public:
 	void DriveInputCartesian(double x, double y, double rotation);
 	void DriveInputPolar(double speed, double angle, double rotation);
 	void Reset();
+	void setSpeedModifier(double mod);
 	void TurnToDegree(double angle);
 	void PIDWrite(double output);
 	void motorDrive(int port);

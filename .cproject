@@ -35,12 +35,11 @@
 								<option id="gnu.cpp.compiler.option.optimization.flags.2048114892" name="Other optimization flags" superClass="gnu.cpp.compiler.option.optimization.flags" useByScannerDiscovery="false" value="-Og" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.debugging.level.969129918" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.394786621" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;C:\Users\Benjamin\Downloads\CTRE_FRCLibs_NON-WINDOWS_v4.4.1.9\cpp\include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Users\Benjamin\navx-mxp\cpp\include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Users\Benjamin\GRIP&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${WPILIB}/cpp/current/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${WPILIB}/user/cpp/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\Team 4169\navx-mxp\cpp\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\Team 4169\Downloads\CTRE_FRCLibs_NON-WINDOWS_v4.4.1.10\cpp\include&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.dialect.flags.1518551306" name="Other dialect flags" superClass="gnu.cpp.compiler.option.dialect.flags" useByScannerDiscovery="true" value="-std=c++1y" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1033680971" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
@@ -53,10 +52,10 @@
 									<listOptionValue builtIn="false" value="wpi"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.1566479969" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" useByScannerDiscovery="false" valueType="libPaths">
-									<listOptionValue builtIn="false" value="&quot;C:\Users\Benjamin\Downloads\CTRE_FRCLibs_NON-WINDOWS_v4.4.1.9\cpp\lib&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Users\Benjamin\navx-mxp&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${WPILIB}/cpp/current/lib&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${WPILIB}/user/cpp/lib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\Team 4169\Downloads\CTRE_FRCLibs_NON-WINDOWS_v4.4.1.9\cpp\lib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\Team 4169\navx-mxp&quot;"/>
 								</option>
 								<option id="gnu.cpp.link.option.flags.675338432" name="Linker flags" superClass="gnu.cpp.link.option.flags" useByScannerDiscovery="false" value="-Wl,-rpath,/opt/GenICam_v3_0_NI/bin/Linux32_ARM" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.132949138" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">

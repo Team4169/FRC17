@@ -10,6 +10,8 @@
 #include <SmartDashboard/SendableChooser.h>
 #include <SmartDashboard/SmartDashboard.h>
 #include <AHRS.h>
+#include <NetworkTables/NetworkTable.h>
+
 
 #include "OI.h"
 #include "Subsystems/DriveTrain.h"
@@ -42,6 +44,7 @@ private:
 	std::shared_ptr<RopeClimber> ropeClimber;
 	std::shared_ptr<OI> oi;
 	frc::SendableChooser<frc::Command*> chooser;
+	std::shared_ptr<NetworkTable> table;
 	static void VisionThread();
 	std::unique_ptr<frc::Command> autonomousCommand;
 };
