@@ -1,5 +1,6 @@
 #include "Robot.h"
 #include <GripPipeline.h>
+#include "Commands/TurnDegrees.h"
 
 static Robot *mRobotPointer = NULL;
 
@@ -42,17 +43,16 @@ void Robot::RobotInit() {
 	driveTrain = std::make_shared<DriveTrain>();
 	ropeClimber = std::make_shared<RopeClimber>();
 	oi = std::make_shared<OI>();
-	//chooser.AddDefault("Default Auto", new ExampleCommand());
-	// chooser.AddObject("My Auto", new MyAutoCommand());
+	chooser.AddDefault("90 degrees", new TurnDegrees(90));
+	chooser.AddObject("45 degrees", new TurnDegrees(45));
+	chooser.AddObject("-45 degrees", new TurnDegrees(-45));
+	chooser.AddObject("-90 degrees", new TurnDegrees(-90));
 	frc::SmartDashboard::PutData(Scheduler::GetInstance());
-	frc::SmartDashboard::PutData(GetInstance()->getDriveTrain().get());
-	frc::SmartDashboard::PutData(GetInstance()->getRopeClimber().get());
+	frc::SmartDashboard::PutData(driveTrain.get());
+	frc::SmartDashboard::PutData(ropeClimber.get());
 
-	//static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->Reset();
-	//static_cast<RopeClimber*>(GetInstance()->getRopeClimber().get())->Stop();
-
-	GetInstance()->getDriveTrain().get()->Reset();
-	GetInstance()->getRopeClimber().get()->Stop();
+	driveTrain->Reset();
+	ropeClimber->Stop();
 
 	std::thread visionThread(VisionThread);
 	visionThread.detach();
@@ -97,9 +97,10 @@ void Robot::AutonomousInit() {
 }
 void Robot::AutonomousPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
-	//frc::SmartDashboard::PutNumber("Angle", static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->getAHRS()->GetAngle());
-	//frc::SmartDashboard::PutNumber("X Displacement", static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->getAHRS()->GetDisplacementX());
-	//frc::SmartDashboard::PutNumber("Y Displacement", static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->getAHRS()->GetDisplacementY());
+
+	frc::SmartDashboard::PutNumber("Angle", driveTrain->getAHRS()->GetAngle());
+	frc::SmartDashboard::PutNumber("X Displacement", driveTrain->getAHRS()->GetDisplacementX());
+	frc::SmartDashboard::PutNumber("Y Displacement", driveTrain->getAHRS()->GetDisplacementY());
 }
 void Robot::TeleopInit() {
 	// This makes sure that the autonomous stops running when
@@ -112,16 +113,18 @@ void Robot::TeleopInit() {
 }
 void Robot::TeleopPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
-	//frc::SmartDashboard::PutNumber("Angle", static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->getAHRS()->GetAngle());
-	//frc::SmartDashboard::PutNumber("X Displacement", static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->getAHRS()->GetDisplacementX());
-	//frc::SmartDashboard::PutNumber("Y Displacement", static_cast<DriveTrain*>(GetInstance()->getDriveTrain().get())->getAHRS()->GetDisplacementY());
+	frc::SmartDashboard::PutNumber("Angle", driveTrain->getAHRS()->GetAngle());
+	frc::SmartDashboard::PutNumber("X Displacement", driveTrain->getAHRS()->GetDisplacementX());
+	frc::SmartDashboard::PutNumber("Y Displacement", driveTrain->getAHRS()->GetDisplacementY());
 
-	frc::SmartDashboard::PutBoolean("A Button", GetInstance()->getOI()->getController()->GetAButton());
-	frc::SmartDashboard::PutBoolean("B Button", GetInstance()->getOI()->getController()->GetBButton());
-	frc::SmartDashboard::PutNumber("Right Trigger", GetInstance()->getOI()->getController()->GetTriggerAxis(GenericHID::kRightHand));
-	frc::SmartDashboard::PutNumber("Left Trigger", GetInstance()->getOI()->getController()->GetTriggerAxis(GenericHID::kLeftHand));
-	frc::SmartDashboard::PutNumber("X", GetInstance()->getOI()->getController()->GetX(GenericHID::kLeftHand));
-	frc::SmartDashboard::PutNumber("Y", GetInstance()->getOI()->getController()->GetY(GenericHID::kLeftHand));
+	frc::SmartDashboard::PutBoolean("A Button", oi->getController()->GetAButton());
+	frc::SmartDashboard::PutBoolean("B Button", oi->getController()->GetBButton());
+	frc::SmartDashboard::PutBoolean("X Button", oi->getController()->GetXButton());
+	frc::SmartDashboard::PutBoolean("Y Button", oi->getController()->GetYButton());
+	frc::SmartDashboard::PutNumber("Right Trigger", oi->getController()->GetTriggerAxis(GenericHID::kRightHand));
+	frc::SmartDashboard::PutNumber("Left Trigger", oi->getController()->GetTriggerAxis(GenericHID::kLeftHand));
+	frc::SmartDashboard::PutNumber("X", oi->getController()->GetX(GenericHID::kLeftHand));
+	frc::SmartDashboard::PutNumber("Y", oi->getController()->GetY(GenericHID::kLeftHand));
 }
 void Robot::TestPeriodic() {
 	frc::LiveWindow::GetInstance()->Run();

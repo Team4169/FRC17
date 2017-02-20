@@ -1,14 +1,14 @@
 #include "UpRope.h"
 #include "../Robot.h"
 
-static RopeClimber* getRopeClimber() {
-	return Robot::GetInstance()->getRopeClimber().get();
+static std::shared_ptr<RopeClimber> getRopeClimber() {
+	return Robot::GetInstance()->getRopeClimber();
 }
 
 UpRope::UpRope() : Command("UpRope"){
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(Robot::chassis.get());
-	Requires(getRopeClimber());
+	Requires(getRopeClimber().get());
 }
 
 // Called just before this Command runs the first time

@@ -44,7 +44,6 @@ private:
 	frc::SendableChooser<frc::Command*> chooser;
 	static void VisionThread();
 	std::unique_ptr<frc::Command> autonomousCommand;
-
 };
 
 
