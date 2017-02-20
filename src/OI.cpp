@@ -1,7 +1,6 @@
 #include "OI.h"
 #include "Commands/UpRope.h"
 #include "Commands/DownRope.h"
-#include "Commands/SlowRobot.h"
 #include "RobotMap.h"
 
 OI::OI() : controller(std::make_shared<XboxController>(0)){
@@ -15,7 +14,6 @@ OI::OI() : controller(std::make_shared<XboxController>(0)){
 
 	a->WhenPressed(new UpRope());
 	b->WhenPressed(new DownRope());
-	y->WhenPressed(new SlowRobot());
 
 }
 
