@@ -1,7 +1,7 @@
 #include "OI.h"
 #include "Commands/UpRope.h"
 #include "Commands/DownRope.h"
-#include "Commands/TestMotors.h"
+#include "RobotMap.h"
 
 OI::OI() : controller(std::make_shared<XboxController>(0)){
 	//Define controller to the one in port 0
