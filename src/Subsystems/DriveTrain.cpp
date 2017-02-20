@@ -32,6 +32,8 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
     auto_distance = 0;
     auto_accel_distance = 0;
     auto_accel_end_speed = 0;
+
+    currentAngle = 0;
 }
 
 void DriveTrain::InitDefaultCommand() {
@@ -69,28 +71,6 @@ void DriveTrain::Drive(std::shared_ptr<XboxController> joy){
 
 
 	robotdrive->MecanumDrive_Cartesian(x, y, rotation);
-}
-
-void DriveTrain::motorDrive(int port){
-	switch(port){
-	case 1:
-		left_front_motor->Set(0.3);
-		break;
-	case 2:
-		left_back_motor->Set(-0.3);
-				break;
-	case 3:
-		right_front_motor->Set(0.3);
-				break;
-	case 4:
-		right_back_motor->Set(-0.3);
-	}
-}
-
-void DriveTrain::DriveInput(double x, double y, double rotation) {
-
-	robotdrive->MecanumDrive_Cartesian(x, y, rotation);
-
 }
 
 void DriveTrain::DriveInputCartesian(double x, double y, double rotation) {

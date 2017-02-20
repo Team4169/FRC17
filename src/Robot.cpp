@@ -49,8 +49,6 @@ void Robot::RobotInit() {
 	ropeClimber = std::make_shared<RopeClimber>();
 	oi = std::make_shared<OI>();
 
-	//chooser.AddDefault("90 Degrees", new TurnDegrees(90));
-	//chooser.AddObject("45 Degrees", new TurnDegrees(45));
 	frc::SmartDashboard::PutData(Scheduler::GetInstance());
 	frc::SmartDashboard::PutData(driveTrain.get());
 	frc::SmartDashboard::PutData(ropeClimber.get());
