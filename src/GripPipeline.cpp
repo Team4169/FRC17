@@ -1,4 +1,4 @@
-#include "../GripPipeline.h"
+#include "GripPipeline.h"
 #include "Robot.h"
 #include <math.h>
 /**
