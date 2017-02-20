@@ -4,9 +4,7 @@
 #include <Commands/Command.h>
 
 
-class TurnDegrees : frc::Command {
-private:
-	double desiredAngle;
+class TurnDegrees : public Command {
 public:
 	TurnDegrees(double angle);
 	void Initialize();
@@ -14,6 +12,8 @@ public:
 	bool IsFinished();
 	void End();
 	void Interrupted();
+private:
+	double desiredAngle;
 };
 
 #endif  // TurnDegrees_H

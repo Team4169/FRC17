@@ -1,37 +1,45 @@
-#include "DriveWithController.h"
+#include "AlignRobot.h"
 #include "../Robot.h"
 
 static std::shared_ptr<DriveTrain> getDriveTrain() {
 	return Robot::GetInstance()->getDriveTrain();
 }
 
-DriveWithController::DriveWithController() : Command("DriveWithController") {
+AlignRobot::AlignRobot() : Command("AlignRobot") {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(Robot::chassis.get());
 	Requires(getDriveTrain().get());
+	table = NetworkTable::GetTable("Vision_Info");
+	direction = table->GetString("DirectionString");
+	if (direction == "Left"){
+		x = -0.1;
+	} else if (direction == "Right"){
+		x = 0.1;
+	}
 }
 
 // Called just before this Command runs the first time
-void DriveWithController::Initialize() {
+void AlignRobot::Initialize() {
+
 }
 
 // Called repeatedly when this Command is scheduled to run
-void DriveWithController::Execute() {
-	getDriveTrain()->Drive(Robot::GetInstance()->getOI()->getController());
+void AlignRobot::Execute() {
+	getDriveTrain()->DriveInputCartesian(x, 0, 0);
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool DriveWithController::IsFinished() {
-	return false;
+bool AlignRobot::IsFinished() {
+	return direction != table->GetString("DirectionString");
 }
 
 // Called once after isFinished returns true
-void DriveWithController::End() {
+void AlignRobot::End() {
 	getDriveTrain()->Reset();
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void DriveWithController::Interrupted() {
+void AlignRobot::Interrupted() {
 	End();
 }
