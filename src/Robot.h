@@ -13,7 +13,6 @@
 
 #include "OI.h"
 #include "Subsystems/DriveTrain.h"
-#include "Subsystems/ExampleSubsystem.h"
 #include "Subsystems/RopeClimber.h"
 
 class Robot: public frc::IterativeRobot {
@@ -27,7 +26,6 @@ public:
 	void TeleopInit() override;
 	void TeleopPeriodic() override;
 	void TestPeriodic() override;
-	std::shared_ptr<ExampleSubsystem> getExampleSubsystem();
 	std::shared_ptr<DriveTrain> getDriveTrain();
 	std::shared_ptr<RopeClimber> getRopeClimber();
 	std::shared_ptr<OI> getOI();
@@ -37,7 +35,6 @@ public:
 	const static int CAMERA_IMG_HEIGHT = 240;
 
 private:
-	std::shared_ptr<ExampleSubsystem> exampleSubsystem;
 	std::shared_ptr<DriveTrain> driveTrain;
 	std::shared_ptr<RopeClimber> ropeClimber;
 	std::shared_ptr<OI> oi;

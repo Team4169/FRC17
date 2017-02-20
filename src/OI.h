@@ -11,7 +11,8 @@ public:
 private:
 	std::shared_ptr<XboxController> controller;
 	std::shared_ptr<JoystickButton> a,
-		b;
+		b,
+		x;
 };
 
 #endif  // OI_H

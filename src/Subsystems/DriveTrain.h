@@ -15,7 +15,6 @@ private:
 	// for methods that implement subsystem capabilities
 	double x, y;
 	double rotation;
-	bool autoAlignEnabled;
 
 	std::shared_ptr<AnalogGyro> gyro;
 	AHRS *ahrs;
@@ -32,7 +31,7 @@ private:
     constexpr static double kP = 0.03f,
 			kI = 0.00f,
 			kD = 0.00f,
-			kF = 0.00f,
+			kF = 0.00f;
     float auto_accel_distance,
 		auto_distance,
 		auto_accel_end_speed;
@@ -46,7 +45,6 @@ public:
 	void Reset();
 	void TurnToDegree(double angle);
 	void PIDWrite(double output);
-	void motorDrive(int port);
 	AHRS* getAHRS();
 	double getCurrentAngle();
 	void setAutoAccelerationDistance(float dist);
