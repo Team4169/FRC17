@@ -6,7 +6,6 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	x = 0;
 	y = 0;
 	rotation = 0;
-	autoAlignEnabled = false;
 	currentAngle = 0;
 
 	left_front_motor = std::make_shared<CANTalon>(LEFT_FRONT_MOTOR);
@@ -34,12 +33,14 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
     auto_distance = 0;
     auto_accel_distance = 0;
     auto_accel_end_speed = 0;
+
+    currentAngle = 0;
 }
 
 void DriveTrain::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 	// SetDefaultCommand(new MySpecialCommand());
-	SetDefaultCommand(new DriveWithController);
+	SetDefaultCommand(new DriveWithController());
 }
 
 
