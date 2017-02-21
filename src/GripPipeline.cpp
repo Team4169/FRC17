@@ -69,7 +69,7 @@ void GripPipeline::Process(cv::Mat& source0){
 	cv::Mat findContoursInput = desaturateOutput;
 	//bool findContoursExternalOnly = false;  // default Boolean
 	std::vector<cv::Vec4i> hierarchy;
-	int mode = cv::RETR_LIST;
+	int mode = cv::RETR_EXTERNAL;
 	int method = cv::CHAIN_APPROX_SIMPLE;
 	cv::findContours(desaturateOutput, this->findContoursOutput, hierarchy, mode, method);
 	SmartDashboard::PutNumber("Vision Processing", 7);
@@ -81,6 +81,12 @@ void GripPipeline::Process(cv::Mat& source0){
 	SmartDashboard::PutNumber("Vision Processing", 8);
 
 	int size = (signed int)findContoursOutput.size();
+
+	if(size<2){
+		table->PutNumber("DistanceX", -1);
+		table->PutString("DirectionString", NULL);
+		return;
+	}
 
 	for(int j=0;j<2;j++){
 		int currentContourIndex = -2;
@@ -96,15 +102,16 @@ void GripPipeline::Process(cv::Mat& source0){
 
 	     }
 		largestRectsIndex[j] = currentContourIndex;
-		largestRectangles[j] = boundingRect(findContoursOutput[currentContourIndex]);
+		if(currentContourIndex > -1)
+			largestRectangles[j] = boundingRect(findContoursOutput[currentContourIndex]);
 	}
 
 
 	//draws the rectangles around the largest 2 contours if their sides match a certain ratio
 	//plus or minus a given threshold for error
+
+
 	for(int i=0;i<2;i++){
-		if(size<2)
-			continue;
 		cv::Scalar color = cv::Scalar(255, 255, 255);
 		cv::rectangle(rectanglesMat, largestRectangles[i], color, 1, 8, 0);
 	}
@@ -119,9 +126,8 @@ void GripPipeline::Process(cv::Mat& source0){
 
 		int Rect0DistanceFromCenter = abs(centerX-(largestRectangles[0].x+largestRectangles[0].width/2));
 		int Rect1DistanceFromCenter = abs(centerX-(largestRectangles[1].x+largestRectangles[1].width/2));
-		double distanceX = 2*(((double)abs(Rect0DistanceFromCenter-Rect1DistanceFromCenter))/(((double)largestRectangles[0].width + (double)largestRectangles[1].width)/2));
-		//distance in inches. Takes average pixel width of tape, assumes is 2 inches, divides pixel distance
-		//to move by that and then multiplies by 2 to get inches.
+		double distanceX = ((double)Rect0DistanceFromCenter + (double)Rect1DistanceFromCenter)/2;
+
 		int angle = 0;
 		if(Rect0DistanceFromCenter > Rect1DistanceFromCenter){
 			if(largestRectangles[0].x > centerX){
@@ -152,40 +158,6 @@ void GripPipeline::Process(cv::Mat& source0){
 		}catch(std::exception e){
 			DriverStation::ReportError(e.what());
 		}
-
-
-	/*
-	if(static_cast<DriveTrain*>(Robot::GetInstance()->getDriveTrain().get())->getAutoAlignMode()){
-		if(abs(Rect0DistanceFromCenter-Rect1DistanceFromCenter)>(Robot::CAMERA_IMG_WIDTH/10)){ //if the difference in distance to center is above a certain threshold
-			if(Rect0DistanceFromCenter>Rect1DistanceFromCenter){ //determines which rectangle to move towards
-				if(largestRectangles[0].x>centerX){//determines which direction is toward that rectangle
-					//RIGHT
-					Scheduler::GetInstance()->AddCommand(new DriveForDistance(0, distanceX));
-				}else{
-					//schedule AlignCenterWithCamera(Direction::LEFT)
-					//Scheduler::GetInstance()->AddCommand(new AlignCenterWithCamera(Direction::LEFT, distance));
-					Scheduler::GetInstance()->AddCommand(new DriveForDistance(180, distanceX));
-				}
-			}else{
-				if(largestRectangles[1].x>centerX){
-					//schedule AlignCenterWithCamera(Direction::RIGHT)
-					//Scheduler::GetInstance()->AddCommand(new AlignCenterWithCamera(Direction::RIGHT, distance));
-					Scheduler::GetInstance()->AddCommand(new DriveForDistance(0, distanceX));
-					SmartDashboard::PutNumber("Distance", distanceX);
-				}else{
-					//schedule AlignCenterWithCamera(Direction::LEFT)
-					//Scheduler::GetInstance()->AddCommand(new AlignCenterWithCamera(Direction::LEFT, distance));
-					Scheduler::GetInstance()->AddCommand(new DriveForDistance(M_PI, distanceX));
-					SmartDashboard::PutNumber("Distance", distanceX);
-				}
-			}
-		}else{
-			//autoAlignEnabled=false;
-		}
-		static_cast<DriveTrain*>(Robot::GetInstance()->getDriveTrain().get())->setAutoAlignMode(false);
-	}
-
-	*/
 
 
 }
