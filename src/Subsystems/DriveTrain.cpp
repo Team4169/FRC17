@@ -7,6 +7,7 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	x = 0;
 	y = 0;
 	rotation = 0;
+	currentAngle = 0;
 
 	left_front_motor = std::make_shared<CANTalon>(LEFT_FRONT_MOTOR);
 	left_back_motor = std::make_shared<CANTalon>(LEFT_BACK_MOTOR);
@@ -51,6 +52,8 @@ void DriveTrain::InitDefaultCommand() {
 void DriveTrain::Drive(std::shared_ptr<XboxController> joy){
 	x = joy->GetX(GenericHID::kLeftHand);
 	y = joy->GetY(GenericHID::kLeftHand);
+	double adjustment = 0;
+	rotation = joy->GetTriggerAxis(GenericHID::kRightHand) - joy->GetTriggerAxis(GenericHID::kLeftHand) - adjustment;
 
 	if(fabs(x) < 0.2){
 		x = 0;
@@ -59,15 +62,12 @@ void DriveTrain::Drive(std::shared_ptr<XboxController> joy){
 	if(fabs(y) < 0.2){
 		y = 0;
 	}
-
-
-	double adjustment = ((y>0)? 0.02 : 0);
-
-	rotation = joy->GetTriggerAxis(GenericHID::kRightHand) - joy->GetTriggerAxis(GenericHID::kLeftHand) - adjustment;
-
-	if (fabs(rotation) < 0.1) {
+	if(fabs(rotation) < 0.1){
 		rotation = 0;
 	}
+
+	SmartDashboard::PutNumber("JoyX", x);
+	SmartDashboard::PutNumber("JoyY", y);
 
 	if (joy->GetYButton()){
 		x /= 4;
