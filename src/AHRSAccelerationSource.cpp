@@ -10,7 +10,7 @@
 AHRSAccelerationSource::AHRSAccelerationSource(AHRS* ah) {
 	// TODO Auto-generated constructor stub
 	ahrs = ah;
-	SetPIDSourceType(kRate);
+	SetPIDSourceType(frc::PIDSourceType::kRate);
 }
 
 AHRSAccelerationSource::~AHRSAccelerationSource() {
