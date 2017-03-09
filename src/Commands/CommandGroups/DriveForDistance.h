@@ -3,14 +3,14 @@
 
 #include <Commands/CommandGroup.h>
 #include <Commands/Command.h>
+#include <Timer.h>
 
 class DriveForDistance : public CommandGroup {
 public:
-	DriveForDistance(float dist, float angle);
+	DriveForDistance(float dist);
 private:
-	constexpr static float kSpeed = 0.5,
-		kAccelerationRate = 0.01,
-		kMinDistance = 5;
+	constexpr static float kSpeed = 3,
+		kAccelerationRate = 1;
 };
 
 #endif  // DriveForDistance_H

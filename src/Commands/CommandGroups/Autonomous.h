@@ -6,7 +6,7 @@
 
 class Autonomous : public CommandGroup{
 public:
-	Autonomous(float drive_distance, float drive_angle, float turn_angle);
+	Autonomous(float drive_distance, float first_turn_angle, float second_turn_angle);
 private:
 	constexpr static float kPlaceGearDistance = 0.5;
 };

@@ -1,6 +1,7 @@
 #include "DriveTrain.h"
 #include "../Commands/DriveWithController.h"
 #include "../RobotMap.h"
+#include "../AHRSAccelerationSource.h"
 
 DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 	x = 0;
@@ -24,17 +25,18 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain") {
 		err_string += e.what();
 		DriverStation::ReportError(err_string);
 	}
-	turnController = new PIDController(kP, kI, kD, kF, ahrs, this);
+	accelController = new PIDController(kPaccel, kIaccel, kDaccel, kFaccel, new AHRSAccelerationSource(ahrs), this);
+	turnController = new PIDController(kPturning, kIturning, kDturning, kFturning, ahrs, this);
 
 	rotateToAngleRate = 0;
-
-    turnController->Enable();
-
-    auto_distance = 0;
-    auto_accel_distance = 0;
-    auto_accel_end_speed = 0;
-
+	auto_rate = 0;
     currentAngle = 0;
+
+    turnController->Disable();
+
+	accelController->Disable();
+
+	auto_accel_time = 0;
 }
 
 void DriveTrain::InitDefaultCommand() {
@@ -67,36 +69,14 @@ void DriveTrain::Drive(std::shared_ptr<XboxController> joy){
 	SmartDashboard::PutNumber("JoyX", x);
 	SmartDashboard::PutNumber("JoyY", y);
 
-
-
-
-
 	if (joy->GetYButton()){
 		x /= 4;
 		y /= 4;
 		rotation /= 4;
 	}
 
-
 	robotdrive->MecanumDrive_Cartesian(x, y, rotation);
 }
-
-void DriveTrain::motorDrive(int port){
-	switch(port){
-	case 1:
-		left_front_motor->Set(0.3);
-		break;
-	case 2:
-		left_back_motor->Set(-0.3);
-				break;
-	case 3:
-		right_front_motor->Set(0.3);
-				break;
-	case 4:
-		right_back_motor->Set(-0.3);
-	}
-}
-
 
 void DriveTrain::DriveInputCartesian(double x, double y, double rotation) {
 	robotdrive->MecanumDrive_Cartesian(x, y, rotation);
@@ -108,42 +88,33 @@ void DriveTrain::DriveInputPolar(double speed, double angle, double rotation) {
 }
 
 void DriveTrain::Reset(){
-	robotdrive->MecanumDrive_Cartesian(0, 0 , 0);
+	robotdrive->MecanumDrive_Cartesian(0, 0, 0);
 }
 
 void DriveTrain::TurnToDegree(double angle) {
+	accelController->Disable();
+	turnController->Enable();
 	turnController->SetSetpoint(angle);
 	//Turns the robot to the angle given. Angle 0 is the angle during which the robot was initialized in,
 	//not the direction the robot is facing
     robotdrive->MecanumDrive_Polar(0, 0, rotateToAngleRate);
 }
 
+void DriveTrain::AutoAccelerate(double rate) {
+	turnController->Disable();
+	accelController->Enable();
+
+	accelController->SetSetpoint(rate);
+
+	robotdrive->MecanumDrive_Cartesian(0, auto_rate, 0);
+}
+
 void DriveTrain::PIDWrite(double output) {
-	rotateToAngleRate = output;
-}
-
-void DriveTrain::setAutoAccelerationDistance(float dist){
-	auto_accel_distance = dist;
-}
-
-float DriveTrain::getAutoAccelerationDistance(){
-	return auto_accel_distance;
-}
-
-void DriveTrain::setAutoDistance(float dist) {
-	auto_distance = dist;
-}
-
-float DriveTrain::getAutoDistance() {
-	return auto_distance;
-}
-
-void DriveTrain::setAutoAccelCurrentSpeed(float speed){
-	auto_accel_end_speed = speed;
-}
-
-float DriveTrain::getAutoAccelCurrentSpeed() {
-	return auto_accel_end_speed;
+	if (accelController->IsEnabled()) {
+		auto_rate = output;
+	} else if (turnController->IsEnabled()){
+		rotateToAngleRate = output;
+	}
 }
 
 double DriveTrain::getCurrentAngle() {
@@ -154,3 +125,14 @@ AHRS* DriveTrain::getAHRS(){
 	return ahrs;
 }
 
+double DriveTrain::getRotationRate() {
+	return rotateToAngleRate;
+}
+
+double DriveTrain::getAutoAccelRate() {
+	return auto_rate;
+}
+
+std::shared_ptr<Timer> DriveTrain::getAutoTimer() {
+	return auto_timer;
+}
