@@ -10,22 +10,17 @@ static std::shared_ptr<DriveTrain> getDriveTrain() {
 }
 
 
-DriveForDistance::DriveForDistance(float dist, float angle) : CommandGroup("DriveForDistance") {
+DriveForDistance::DriveForDistance(float dist) : CommandGroup("DriveForDistance") {
 	// Add Commands here:
 	// e.g. AddSequential(new Command1());
 	//      AddSequential(new Command2());
 	// these will run in order.
-	getDriveTrain()->setAutoDistance(dist);
-	getDriveTrain()->getAHRS()->ResetDisplacement();
+	getDriveTrain()->getAHRS()->Reset();
+	getDriveTrain()->getAutoTimer()->Start();
+	AddSequential(new AccelerateToSpeed(kSpeed, kAccelerationRate));
+	if ((kSpeed*kSpeed)/kAccelerationRate <= dist) AddSequential(new AutoDrive(dist, kSpeed));
+	AddSequential(new SlowDown(kAccelerationRate));
 
-	if (dist < kMinDistance) {
-		AddSequential(new AccelerateToSpeed(angle, kAccelerationRate));
-		AddSequential(new SlowDown(angle, kAccelerationRate));
-	} else {
-		AddSequential(new AccelerateToSpeed(kSpeed, angle, kAccelerationRate));
-		AddSequential(new AutoDrive(kSpeed, angle));
-		AddSequential(new SlowDown(kSpeed, angle, kAccelerationRate));
-	}
 
 	// To run multiple commands at the same time,
 	// use AddParallel()

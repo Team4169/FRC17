@@ -5,17 +5,14 @@
 
 class SlowDown : public Command {
 public:
-	SlowDown(float current_speed, float angle, float acceleration_rate);
-	SlowDown(float angle, float acceleration_rate);
+	SlowDown(float speed);
 	void Initialize();
 	void Execute();
 	bool IsFinished();
 	void End();
 	void Interrupted();
 private:
-	float current_speed,
-		angle,
-		accel_rate;
+	float acceleration_rate;
 };
 
 #endif  // SlowDown_H

@@ -6,15 +6,16 @@
 #include "../TurnDegrees.h"
 #include "../AlignRobot.h"
 
-Autonomous::Autonomous(float drive_distance, float drive_angle, float turn_angle) : CommandGroup("Autonomous"){
+Autonomous::Autonomous(float drive_distance, float first_turn_angle, float second_turn_angle) : CommandGroup("Autonomous"){
 	// Add Commands here:
 	// e.g. AddSequential(new Command1());
 	//      AddSequential(new Command2());
 	// these will run in order.
-	AddSequential(new DriveForDistance(drive_distance, drive_angle));
-	AddSequential(new TurnDegrees(turn_angle));
+	AddSequential(new TurnDegrees(first_turn_angle));
+	AddSequential(new DriveForDistance(drive_distance));
+	AddSequential(new TurnDegrees(second_turn_angle));
 	AddSequential(new AlignRobot());
-	AddSequential(new DriveForDistance(kPlaceGearDistance, 0));
+	AddSequential(new DriveForDistance(kPlaceGearDistance));
 
 	// To run multiple commands at the same time,
 	// use AddParallel()

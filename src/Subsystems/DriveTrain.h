@@ -18,9 +18,12 @@ private:
 
 	std::shared_ptr<AnalogGyro> gyro;
 	AHRS *ahrs;
-    PIDController *turnController;      // PID Controller
+    PIDController
+			*turnController,
+			*accelController;      // PID Controller
 
-    double rotateToAngleRate;           // Current rotation rate
+    double rotateToAngleRate; // Current rotation rate
+    double auto_rate;
 
 	std::shared_ptr<CANTalon> left_front_motor,
 		left_back_motor,
@@ -32,13 +35,20 @@ private:
     double currentAngle;
 
     constexpr static double
-			kP = 100.0f,
-			kI = 0.00f,
-			kD = 0.00f,
-			kF = 0.00f;
-    float auto_accel_distance,
-		auto_distance,
-		auto_accel_end_speed;
+			kPturning = 0.2f,
+			kIturning = 0.00f,
+			kDturning = 0.00f,
+			kFturning = 0.00f;
+    constexpr static double
+			kPaccel = 0.2f,
+    		kIaccel = 0.00f,
+			kDaccel = 0.00f,
+			kFaccel = 0.00f;
+
+
+	std::shared_ptr<Timer> auto_timer;
+
+	double auto_accel_time;
 
 public:
 	DriveTrain();
@@ -47,17 +57,15 @@ public:
 	void DriveInputCartesian(double x, double y, double rotation);
 	void DriveInputPolar(double speed, double angle, double rotation);
 	void Reset();
-	void setSpeedModifier(double mod);
 	void TurnToDegree(double angle);
+	void AutoAccelerate(double rate);
 	void PIDWrite(double output);
 	AHRS* getAHRS();
 	double getCurrentAngle();
-	void setAutoAccelerationDistance(float dist);
-	float getAutoAccelerationDistance();
-	void setAutoDistance(float dist);
-	float getAutoDistance();
-	void setAutoAccelCurrentSpeed(float speed);
-	float getAutoAccelCurrentSpeed();
+	double getRotationRate();
+	double getAutoAccelRate();
+	std::shared_ptr<Timer> getAutoTimer();
+
 
 	constexpr static double kToleranceDegrees = 5.00f;
 };

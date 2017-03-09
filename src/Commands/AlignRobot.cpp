@@ -12,9 +12,9 @@ AlignRobot::AlignRobot() : Command("AlignRobot") {
 	table = NetworkTable::GetTable("Vision_Info");
 	direction = table->GetString("DirectionString", "");
 	if (direction == "Left"){
-		x = -0.1;
+		x = -0.2;
 	} else if (direction == "Right"){
-		x = 0.1;
+		x = 0.2;
 	} else {
 		End();
 	}

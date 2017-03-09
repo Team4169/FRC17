@@ -24,7 +24,8 @@ void TurnDegrees::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool TurnDegrees::IsFinished() {
-	if (fabs(getDriveTrain()->getCurrentAngle() - desiredAngle) < getDriveTrain()->kToleranceDegrees){
+	if (fabs(getDriveTrain()->getCurrentAngle() - desiredAngle) < getDriveTrain()->kToleranceDegrees &&
+			fabs(getDriveTrain()->getRotationRate()) < 0.1) {
 		return true;
 	} else {
 		return false;

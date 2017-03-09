@@ -5,8 +5,7 @@
 
 class AccelerateToSpeed : public Command {
 public:
-	AccelerateToSpeed(float speed, float angle, float acceleration_rate);
-	AccelerateToSpeed(float angle, float acceleration_rate);
+	AccelerateToSpeed(float speed, float acceleration_rate);
 	void Initialize();
 	void Execute();
 	bool IsFinished();
@@ -14,11 +13,8 @@ public:
 	void Interrupted();
 private:
 	float goal_speed,
-		current_speed,
-		angle,
-		acceleration_rate;
-
-	bool isShort;
+		acceleration_rate,
+		end_time;
 };
 
 #endif  // AccelerateToSpeed_H

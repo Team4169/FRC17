@@ -5,22 +5,16 @@
 
 class AutoDrive : public Command {
 public:
-	AutoDrive(float speed, float angle);
+	AutoDrive(float total_distance, float speed);
 	void Initialize();
 	void Execute();
 	bool IsFinished();
 	void End();
 	void Interrupted();
 private:
-	float speed,
-		angle,
-		drive_distance;
-
-	float current_x,
-		current_y,
-		goal_x,
-		goal_y;
-
+	float distance,
+		speed,
+		end_time;
 };
 
 #endif  // Drive_H

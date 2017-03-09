@@ -6,18 +6,11 @@ static std::shared_ptr<DriveTrain> getDriveTrain() {
 	return Robot::GetInstance()->getDriveTrain();
 }
 
-AutoDrive::AutoDrive(float speed, float angle) : Command("AutoDrive"), speed(speed), angle(angle) {
+AutoDrive::AutoDrive(float distance, float speed) : Command("AutoDrive"), distance(distance), speed(speed) {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(Robot::chassis.get());
 	Requires(getDriveTrain().get());
-
-	current_x = getDriveTrain()->getAHRS()->GetDisplacementX();
-	current_y = getDriveTrain()->getAHRS()->GetDisplacementY();
-
-	drive_distance = getDriveTrain()->getAutoDistance() - 2 * getDriveTrain()->getAutoAccelerationDistance();
-
-	goal_x = current_x + drive_distance * cos(angle);
-	goal_y = current_y + drive_distance * sin(angle);
+	end_time = distance/speed;
 }
 
 // Called just before this Command runs the first time
@@ -26,18 +19,12 @@ void AutoDrive::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void AutoDrive::Execute() {
-	getDriveTrain()->DriveInputPolar(speed, angle, 0);
+	getDriveTrain()->AutoAccelerate(0);
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool AutoDrive::IsFinished() {
-	current_x = getDriveTrain()->getAHRS()->GetDisplacementX();
-	current_y = getDriveTrain()->getAHRS()->GetDisplacementY();
-	if (fabs(goal_x - current_x < 1 && fabs(goal_y - current_y)) < 1){
-		return true;
-	} else {
-		return false;
-	}
+	return end_time <= getDriveTrain()->getAutoTimer()->GetFPGATimestamp();
 }
 
 // Called once after isFinished returns true
